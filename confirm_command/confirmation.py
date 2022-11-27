@@ -28,7 +28,7 @@ class ConfirmationState:
         self.on_disconfirmation = None
         self.message = None
         gui.hide()
-        
+
     def get_message(self) -> str:
         return self.message
 
@@ -45,7 +45,7 @@ class SingleTagContext:
     
 confirmation = ConfirmationState()
 
-@imgui.open()
+@imgui.open(y=0)
 def gui(gui: imgui.GUI):
     gui.text(confirmation.get_message())
 
