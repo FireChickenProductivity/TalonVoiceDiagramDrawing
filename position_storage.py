@@ -40,7 +40,12 @@ class IndexedPositionStorage:
             file.write(representation + '\n')
     
     def clear_positions(self):
-        pass
+        self.positions = []
+        self.update_display_if_shown()
+        self.clear_file_contents()
+
+    def clear_file_contents(self):
+        open(self.file_location, 'w').close()
 
     def get_positions(self):
         return self.positions
