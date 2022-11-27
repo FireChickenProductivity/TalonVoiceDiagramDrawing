@@ -48,6 +48,9 @@ confirmation = ConfirmationState()
 @imgui.open(y=0)
 def gui(gui: imgui.GUI):
     gui.text(confirmation.get_message())
+    gui.line()
+    gui.text('Yes I am sure')
+    gui.text('No')
 
 @module.action_class
 class Actions:
