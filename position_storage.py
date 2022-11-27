@@ -1,22 +1,15 @@
 from .fire_chicken.mouse_position import MousePosition
-from talon import Module, Context
+from talon import Module
 import os
 from .display import PositionNumberingDisplay
 
 module = Module()
-module.list('diagram_drawing_stored_position_number', desc = 'Position numbers in the main storage')
-@module.capture(rule = '{user.diagram_drawing_stored_position_number}')
-def diagram_drawing_stored_position_number(m) -> int:
-    return int(m.diagram_drawing_stored_position_number)
-    
-context = Context()
 
 class IndexedPositionStorage:
     def __init__(self, file_location):
         self.positions = []
         self.file_location = file_location
         self.fetch_positions_from_file()
-        self.fill_positions_list_with_indices()
         self.display = PositionNumberingDisplay()
         self.show_display = False
     
@@ -28,12 +21,6 @@ class IndexedPositionStorage:
                     position = get_position_from_storage_representation(line_without_new_line_character)
                     self.append_position_to_list(position)
 
-    def fill_positions_list_with_indices(self):
-        self.list_dictionary = {}
-        for index, position in enumerate(self.positions):
-            self.list_dictionary[str(index + 1)] = str(index + 1)
-        context.lists['user.diagram_drawing_stored_position_number'] = self.list_dictionary
-
     def get_position_indexed_from_one(self, index: int):
         position = self.positions[index - 1]
         return position
@@ -42,7 +29,6 @@ class IndexedPositionStorage:
         self.append_position_to_list(position)
         self.append_position_to_file(position)
         self.update_display_if_shown()
-        self.update_positions_list()
     
     def append_position_to_list(self, position: MousePosition):
         if position not in self.positions:
@@ -65,11 +51,6 @@ class IndexedPositionStorage:
         if self.show_display:
             self.display_positions()
     
-    def update_positions_list(self):
-        new_index = len(self.positions)
-        self.list_dictionary[str(new_index)] = str(new_index)
-        context.lists['user.diagram_drawing_stored_position_number'] = self.list_dictionary
-
     def hide_display(self):
         self.display.hide()
         self.show_display = False 
