@@ -2,7 +2,7 @@ from .fire_chicken.mouse_position import MousePosition
 from talon import Module
 import os
 from .display import PositionNumberingDisplay
-
+from .confirm_command.confirmation import confirmation
 module = Module()
 
 class IndexedPositionStorage:
@@ -38,7 +38,15 @@ class IndexedPositionStorage:
         with open(self.file_location, 'a') as file:
             representation = get_position_storage_representation(position)
             file.write(representation + '\n')
-        
+    
+    def clear_positions(self):
+        self.positions = []
+        self.update_display_if_shown()
+        self.clear_file_contents()
+
+    def clear_file_contents(self):
+        open(self.file_location, 'w').close()
+
     def get_positions(self):
         return self.positions
 
@@ -103,3 +111,12 @@ class Actions:
     def diagram_drawing_hide_numbering():
         ''''''
         main_position_storage.hide_display()
+    
+    def diagram_drawing_clear_numbering():
+        ''''''
+        message = "Are you sure that you would like to clear the current numbering?"
+        def on_confirmation():
+            main_position_storage.clear_positions()
+        def on_disconfirmation():
+            pass
+        confirmation.request_confirmation(message, on_confirmation, on_disconfirmation)
