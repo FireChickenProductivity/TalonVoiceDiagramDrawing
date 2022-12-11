@@ -11,6 +11,12 @@ line_drawing_unit = module.setting(
     default = 20,
     desc = 'The unit length for line drawing'
 )
+cross_out_size = module.setting(
+    'diagram_drawing_cross_out_size',
+    type = int,
+    default = 80,
+    desc = 'The size of the cross out lines'
+)
 
 @module.action_class
 class Actions:
@@ -53,6 +59,11 @@ class Actions:
         destination = main_position_storage.get_position_indexed_from_one(destination_position_number)
         draw_and_store_line_between_points(origin, destination)
         draw_arrow_after_line(origin, destination)
+    
+    def diagram_drawing_cross_out_stored_position(position_number: int):
+        ''''''
+        position = main_position_storage.get_position_indexed_from_one(position_number)
+        cross_out_at_position(position)
 
 def draw_and_store_line_between_points(origin: MousePosition, destination: MousePosition):
     actions.user.diagram_drawing_draw_line(origin, destination)
@@ -75,3 +86,12 @@ def compute_difference_position_with_angle_and_length(angle: float, length: int)
     vertical = int(-sin(angle)*length )
     position = MousePosition(horizontal, vertical)
     return position
+
+def cross_out_at_position(position: MousePosition):
+    half_cross_out_size = cross_out_size.get()/2
+    first_line_start = MousePosition(-half_cross_out_size, -half_cross_out_size) + position
+    first_line_ending = MousePosition(half_cross_out_size, half_cross_out_size) + position
+    second_line_start = MousePosition(half_cross_out_size, -half_cross_out_size) + position
+    second_line_ending = MousePosition(-half_cross_out_size, half_cross_out_size) + position
+    actions.user.diagram_drawing_draw_line(first_line_start, first_line_ending)
+    actions.user.diagram_drawing_draw_line(second_line_start, second_line_ending)
