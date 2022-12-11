@@ -11,3 +11,5 @@ line <number_small> <user.diagram_drawing_complex_direction> <number_small>:
 
 <number> vector <number>:
     user.diagram_drawing_draw_vector_between_stored_positions(number_1, number_2)
+
+cross [out] <number>: user.diagram_drawing_cross_out_stored_position(number)
