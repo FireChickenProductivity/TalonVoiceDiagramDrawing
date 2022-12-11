@@ -29,6 +29,11 @@ class Actions:
     def diagram_drawing_unselect():
         ''''''
         actions.key('escape:2')
+    
+    def diagram_drawing_edit_text_at_cursor():
+        ''''''
+        left_click()
+        left_click()
 
 def activate_line_drawing_tool():
     actions.key('v')

@@ -11,6 +11,14 @@ class Actions:
 
     def diagram_drawing_label_stored_position(position_index: int):
         '''Creates a text field at the specified stored mouse position'''
-        position = main_position_storage.get_position_indexed_from_one(position_index)
-        position.go()
+        move_mouse_to_position_in_storage_indexed_from_one(position_index)
         actions.user.diagram_drawing_create_text_field()
+    
+    def diagram_drawing_edit_text_at_stored_position(position_index: int):
+        '''Edits the text field at the stored position'''
+        move_mouse_to_position_in_storage_indexed_from_one()
+        actions.user.diagram_drawing_edit_text_at_cursor()
+
+def move_mouse_to_position_in_storage_indexed_from_one(position_index: int):
+    position = main_position_storage.get_position_indexed_from_one(position_index)
+    position.go()
