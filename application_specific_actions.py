@@ -19,3 +19,7 @@ class Actions:
     def diagram_drawing_unselect():
         ''''''
         pass
+
+    def diagram_drawing_edit_text_at_cursor():
+        ''''''
+        pass
