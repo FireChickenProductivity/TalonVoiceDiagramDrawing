@@ -16,9 +16,24 @@ class Actions:
     
     def diagram_drawing_edit_text_at_stored_position(position_index: int):
         '''Edits the text field at the stored position'''
-        move_mouse_to_position_in_storage_indexed_from_one()
+        move_mouse_to_position_in_storage_indexed_from_one(position_index)
         actions.user.diagram_drawing_edit_text_at_cursor()
+    
+    def diagram_drawing_label_stored_position_with_text(position_index: int, text: str):
+        '''Labels the stored position with the specified text'''
+        actions.user.diagram_drawing_label_stored_position(position_index)
+        actions.insert(text)
+        actions.user.user.diagram_drawing_unselect()
+    
+    def diagram_drawing_label_stored_position_with_positive_number(position_index: int, number: int):
+        '''Labels the stored position with the specified positive number'''
+        actions.user.diagram_drawing_label_stored_position_with_text(position_index, str(number))
+    
+    def diagram_drawing_label_stored_position_with_negative_number(position_index: int, magnitude: int):
+        '''Labels the stored position with the negative number with specified magnitude'''
+        actions.user.diagram_drawing_label_stored_position_with_text(position_index, '-' + str(magnitude))
 
 def move_mouse_to_position_in_storage_indexed_from_one(position_index: int):
     position = main_position_storage.get_position_indexed_from_one(position_index)
     position.go()
+
