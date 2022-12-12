@@ -48,6 +48,11 @@ class Actions:
         actions.user.diagram_drawing_draw_line(origin, destination)
         store_line_in_main_storage(origin, destination)
     
+    def diagram_drawing_draw_line_between_stored_positions_with_label(origin_position_number: int, destination_position_number: int, label: str):
+        ''''''
+        actions.user.diagram_drawing_draw_line_between_stored_positions(origin_position_number, destination_position_number)
+        label_average_position_with(origin_position_number, destination_position_number, label)
+    
     def diagram_drawing_draw_vector(origin: MousePosition, destination: MousePosition):
         ''''''
         draw_and_store_line_between_points(origin, destination)
@@ -59,6 +64,11 @@ class Actions:
         destination = main_position_storage.get_position_indexed_from_one(destination_position_number)
         draw_and_store_line_between_points(origin, destination)
         draw_arrow_after_line(origin, destination)
+
+    def diagram_drawing_draw_vector_between_stored_positions_with_label(origin_position_number: int, destination_position_number: int, label: str):
+        ''''''
+        actions.user.diagram_drawing_draw_vector_between_stored_positions(origin_position_number, destination_position_number)
+        label_average_position_with(origin_position_number, destination_position_number, label)
     
     def diagram_drawing_cross_out_stored_position(position_number: int):
         ''''''
@@ -95,3 +105,20 @@ def cross_out_at_position(position: MousePosition):
     second_line_ending = MousePosition(-half_cross_out_size, half_cross_out_size) + position
     actions.user.diagram_drawing_draw_line(first_line_start, first_line_ending)
     actions.user.diagram_drawing_draw_line(second_line_start, second_line_ending)
+
+def compute_position_average(position1: MousePosition, position2: MousePosition):
+    average = MousePosition(computer_average(position1.get_horizontal(), position2.get_horizontal()), computer_average(position1.get_vertical(), position2.get_vertical()))
+    return average
+
+def computer_average(number1, number2):
+    average = (number1 + number2)/2
+    return average
+
+def label_average_position_with(origin_position_number: int, destination_position_number: int, label: str):
+    origin = main_position_storage.get_position_indexed_from_one(origin_position_number)
+    destination = main_position_storage.get_position_indexed_from_one(destination_position_number)
+    middle_position = compute_position_average(origin, destination)
+    middle_position.go()
+    actions.user.diagram_drawing_create_text_field()
+    actions.insert(label)
+    actions.user.diagram_drawing_unselect()
