@@ -8,7 +8,5 @@ change <number>:
 fresh <number>:
     user.diagram_drawing_edit_text_at_stored_position(number)
     edit.line_end()
-<number> (value|val) <number>:
-    user.diagram_drawing_label_stored_position_with_positive_number(number_1, number_2)
-<number> (value|val) (minus|negative|dash) <number>:
-    user.diagram_drawing_label_stored_position_with_negative_number(number_1, number_2)
+<number> (value|val) <user.diagram_drawing_number>:
+    user.diagram_drawing_label_stored_position_with_text(number, diagram_drawing_number)
