@@ -24,7 +24,7 @@ class Actions:
         ''''''
         pass
 
-    def diagram_drawing_start_free_style_drawing():
+    def diagram_drawing_start_freestyle_drawing():
         '''Starts freestyle drawing where moving the cursor draws'''
         pass
 
