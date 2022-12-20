@@ -2,6 +2,20 @@ from talon import Module, actions
 from .fire_chicken.mouse_position import MousePosition
 import math
 
+module = Module()
+circle_drawing_delay = module.setting(
+    'diagram_drawing_circle_drawing_delay',
+    type = float,
+    default = 0.02,
+    desc = 'How much to pause between points when drawing circles through freestyle drawing'
+)
+dot_radius = module.setting(
+    'diagram_drawing_dot_radius',
+    type = int,
+    default = 7,
+    desc = 'The radius of dots'
+)
+
 def draw_dot_circle(center: MousePosition, radius: int, delay: float = 0.02):
     positions = compute_circle_points(center, radius)
     positions[0].go()
@@ -37,13 +51,12 @@ def compute_position_array_flipped_around_horizontal(positions, horizontal_heigh
         result.append(flipped_position)
     return result
 
-module = Module()
 @module.action_class
 class Actions:
-    def diagram_drawing_draw_dot(radius: int = 7):
+    def diagram_drawing_draw_dot():
         ''''''
         actions.user.diagram_drawing_start_freestyle_drawing()
         current_position = MousePosition.current()
-        for i in range(radius):
-            draw_dot_circle(current_position, i)
+        for i in range(dot_radius.get()):
+            draw_dot_circle(current_position, i, circle_drawing_delay.get())
         actions.user.diagram_drawing_stop_freestyle_drawing()
