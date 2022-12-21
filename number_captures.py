@@ -23,3 +23,9 @@ def diagram_drawing_number(m) -> str:
     if len(m) == 2:
         result = '-' + m[1]
     return result
+
+@module.capture(rule = '<user.diagram_drawing_number>')
+def diagram_drawing_number_float(m) -> float:
+    ''''''
+    result: float = float(m.diagram_drawing_number)
+    return result
