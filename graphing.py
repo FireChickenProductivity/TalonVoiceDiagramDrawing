@@ -101,18 +101,21 @@ class Axis:
         direction_unit_vector: MousePosition = MousePosition(direction.get_horizontal()/direction_position_magnitude, direction.get_vertical()/direction_position_magnitude)
         return direction_unit_vector
     
-    def _add_tick(self, label: str, *, target_direction_toward_ending):
-        target_list = self._get_tick_list_with_target_direction(target_direction_toward_ending)
+    def add_tick(self, label: str, *, target_direction_toward_ending):
+        target_list = self._get_tick_list_with_target_direction(target_direction_toward_ending = target_direction_toward_ending)
         target_list.append(label)
         self._draw_tick(label, target_direction_toward_ending = target_direction_toward_ending)
     
     def _draw_tick(self, label: str, *, target_direction_toward_ending):
-        target_list = self._get_tick_list_with_target_direction(target_direction_toward_ending)
+        target_list = self._get_tick_list_with_target_direction(target_direction_toward_ending = target_direction_toward_ending)
         ticks_along_axis = len(target_list)
-        axis_position: MousePosition = self.get_position_along_axis_by_amount_from(ticks_along_axis, self.origin)
+        axis_position_signed_distance = ticks_along_axis
+        if target_direction_toward_ending:
+            axis_position_signed_distance *= -1
+        axis_position: MousePosition = self.get_position_along_axis_by_amount_from(axis_position_signed_distance, self.origin)
         direction_unit_vector: MousePosition = self.compute_direction_unit_vector()
         tick_direction_unit_vector: MousePosition = MousePosition(direction_unit_vector.get_vertical(), -direction_unit_vector.get_horizontal())
-        tick_direction_vector: MousePosition = MousePosition(tick_direction_unit_vector.get_horizontal()*tick_half_size, tick_direction_unit_vector.get_vertical()*tick_half_size)
+        tick_direction_vector: MousePosition = MousePosition(tick_direction_unit_vector.get_horizontal()*tick_half_size.get(), tick_direction_unit_vector.get_vertical()*tick_half_size.get())
         tick_start: MousePosition = axis_position + tick_direction_vector
         tick_ending: MousePosition = axis_position - tick_direction_vector
         actions.user.diagram_drawing_draw_line(tick_start, tick_ending)
@@ -123,7 +126,7 @@ class Axis:
 
     def _get_tick_list_with_target_direction(self, *, target_direction_toward_ending):
         if target_direction_toward_ending:
-            return self.direction_position_magnitude
+            return self.ending_ticks
         return self.starting_ticks
     
 class Graph:
@@ -167,6 +170,9 @@ class Graph:
             self.add_vertical_axis(starting_distance, ending_distance)
         elif number_of_axes == 2:
             self.add_axis_coming_out(starting_distance, ending_distance)
+        
+    def get_axes(self):
+        return self.axes
 
 def compute_unit_vector(position: MousePosition):
     magnitude = position.distance_from(MousePosition(0, 0))
@@ -180,7 +186,7 @@ def position_multiplied_by(position: MousePosition, factor):
 current_graph = None
 graphing_context = Context()
 module.tag('diagram_drawing_graphing', desc = 'Activate diagram drawing graphing commands')
-
+current_axis = 1
 @module.action_class
 class Actions:
     def diagram_drawing_draw_dot():
@@ -221,3 +227,24 @@ class Actions:
         global current_graph
         current_graph.move_mouse_along_axes(primary_amount, secondary_amount, tertiary_amount)
         actions.user.diagram_drawing_draw_dot()
+    
+    def diagram_drawing_edit_axis(number: int):
+        ''''''
+        global current_axis
+        if number > 0 and number < 4:
+            current_axis = number
+    
+    def diagram_drawing_add_start_tick(label: str):
+        ''''''
+        global current_axis
+        add_tick(current_axis, label, target_direction_toward_ending = False)
+    
+    def diagram_drawing_add_tail_tick(label: str):
+        ''''''
+        global current_axis
+        add_tick(current_axis, label, target_direction_toward_ending = True)
+
+def add_tick(axis_number, label, *, target_direction_toward_ending):
+    global current_graph
+    axis = current_graph.get_axes()[axis_number - 1]
+    axis.add_tick(label, target_direction_toward_ending = target_direction_toward_ending)
