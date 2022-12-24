@@ -130,9 +130,10 @@ class Axis:
         return self.starting_ticks
     
 class Graph:
-    def __init__(self, origin):
+    def __init__(self, origin, dimensions: int = 2):
         self.axes = []
         self.origin = origin
+        self.dimensions = dimensions
     
     def get_position_along_axes(self, primary_amount, secondary_amount = 0, tertiary_amount = 0) -> MousePosition:
         target_position: MousePosition = self.origin
@@ -144,6 +145,40 @@ class Graph:
     def move_mouse_along_axes(self, primary_amount, secondary_amount = 0, tertiary_amount = 0):
         position: MousePosition = self.get_position_along_axes(primary_amount, secondary_amount, tertiary_amount)
         position.go()
+
+    def add_next_axis(self, starting_distance, ending_distance):
+        if self.dimensions == 2:
+            self.add_next_two_dimensional_axis(starting_distance, ending_distance)
+        elif self.dimensions == 3:
+            self.add_next_three_dimensional_axis(starting_distance, ending_distance)
+
+    def add_next_two_dimensional_axis(self, starting_distance, ending_distance):
+        number_of_axes = len(self.axes)
+        if number_of_axes == 0:
+            self.add_horizontal_axis(starting_distance, ending_distance)
+        elif number_of_axes == 1:
+            self.add_vertical_axis(starting_distance, ending_distance)
+
+    def add_next_three_dimensional_axis(self, starting_distance, ending_distance):
+        number_of_axes = len(self.axes)
+        if number_of_axes == 0:
+            self.add_three_dimensional_x_axis(starting_distance, ending_distance)
+        elif number_of_axes == 1:
+            self.add_three_dimensional_y_axis(starting_distance, ending_distance)
+        elif number_of_axes == 2:
+            self.add_vertical_axis(starting_distance, ending_distance)
+
+    def add_horizontal_axis(self, starting_distance, ending_distance):
+        self.add_axis(-1, 0, starting_distance, ending_distance)
+    
+    def add_vertical_axis(self, starting_distance, ending_distance):
+        self.add_axis(0, 1, starting_distance, ending_distance)
+    
+    def add_three_dimensional_x_axis(self, starting_distance, ending_distance):
+       self.add_axis(1, -1, starting_distance, ending_distance)
+    
+    def add_three_dimensional_y_axis(self, starting_distance, ending_distance):
+        self.add_horizontal_axis(starting_distance, ending_distance)
     
     def add_axis(self, direction_horizontal, direction_vertical, starting_distance, ending_distance):
         unit_vector: MousePosition = compute_unit_vector(MousePosition(direction_horizontal, direction_vertical))
@@ -152,24 +187,6 @@ class Graph:
         axis: Axis = Axis(self.origin, start, ending, default_tick_spacing.get())
         axis.draw()
         self.axes.append(axis)
-    
-    def add_horizontal_axis(self, starting_distance, ending_distance):
-        self.add_axis(-1, 0, starting_distance, ending_distance)
-    
-    def add_vertical_axis(self, starting_distance, ending_distance):
-        self.add_axis(0, 1, starting_distance, ending_distance)
-    
-    def add_axis_coming_out(self, starting_distance, ending_distance):
-        self.add_axis(1, -1, starting_distance, ending_distance)
-    
-    def add_next_axis(self, starting_distance, ending_distance):
-        number_of_axes = len(self.axes)
-        if number_of_axes == 0:
-            self.add_horizontal_axis(starting_distance, ending_distance)
-        elif number_of_axes == 1:
-            self.add_vertical_axis(starting_distance, ending_distance)
-        elif number_of_axes == 2:
-            self.add_axis_coming_out(starting_distance, ending_distance)
         
     def get_axes(self):
         return self.axes
@@ -199,15 +216,16 @@ class Actions:
     
     def diagram_drawing_new_graph():
         ''''''
-        global current_graph
-        current_graph = Graph(MousePosition.current())
-        global graphing_context
-        graphing_context.tags = ['user.diagram_drawing_graphing']
+        make_new_graph(2)
     
+    def diagram_drawing_new_three_dimensional_graph():
+        ''''''
+        make_new_graph(3)
+
     def diagram_drawing_finish_graph():
         ''''''
         global current_graph
-        current_graph = []
+        current_graph = None
         global graphing_context
         graphing_context.tags = []
     
@@ -248,3 +266,9 @@ def add_tick(axis_number, label, *, target_direction_toward_ending):
     global current_graph
     axis = current_graph.get_axes()[axis_number - 1]
     axis.add_tick(label, target_direction_toward_ending = target_direction_toward_ending)
+
+def make_new_graph(dimensions: int = 2):
+    global current_graph
+    current_graph = Graph(MousePosition.current(), dimensions)
+    global graphing_context
+    graphing_context.tags = ['user.diagram_drawing_graphing']
