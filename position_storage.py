@@ -120,3 +120,8 @@ class Actions:
         def on_disconfirmation():
             pass
         confirmation.request_confirmation(message, on_confirmation, on_disconfirmation)
+    
+    def diagram_drawing_get_position(position_number: int) -> MousePosition:
+        ''''''
+        position = main_position_storage.get_position_indexed_from_one(position_number)
+        return position
