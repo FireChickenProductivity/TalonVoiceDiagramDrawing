@@ -19,3 +19,5 @@ line <number_small> <user.diagram_drawing_complex_direction> <number_small>:
     user.diagram_drawing_draw_vector_between_stored_positions_with_label(number_1, number_2, diagram_drawing_number)
 
 cross [out] <number>: user.diagram_drawing_cross_out_stored_position(number)
+
+arrow [new] <number>: user.diagram_drawing_draw_arrowhead_at_cursor(number)
