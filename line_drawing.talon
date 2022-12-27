@@ -21,3 +21,6 @@ line <number_small> <user.diagram_drawing_complex_direction> <number_small>:
 cross [out] <number>: user.diagram_drawing_cross_out_stored_position(number)
 
 arrow [new] <number>: user.diagram_drawing_draw_arrowhead_at_cursor(number)
+
+<number> dash stripe <number>:
+    user.diagram_drawing_draw_dashed_line_between_stored_positions(number_1, number_2)
