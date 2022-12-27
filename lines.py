@@ -1,3 +1,4 @@
+import math
 from talon import actions, Module
 from .fire_chicken.mouse_position import MousePosition
 from .directions import Direction
@@ -75,6 +76,10 @@ class Actions:
         position = main_position_storage.get_position_indexed_from_one(position_number)
         cross_out_at_position(position)
 
+    def diagram_drawing_draw_arrowhead_at_cursor(angleInDegrees: float, length: int = 10):
+        ''''''
+        draw_arrow(angleInDegrees, length, MousePosition.current())
+
 def draw_and_store_line_between_points(origin: MousePosition, destination: MousePosition):
     actions.user.diagram_drawing_draw_line(origin, destination)
     store_line_in_main_storage(origin, destination)
@@ -90,6 +95,19 @@ def draw_arrow_half_after_line(origin: MousePosition, destination: MousePosition
     arrow_part_length = position_difference.distance_from(MousePosition(0, 0))//8 + 3
     arrow_difference = compute_difference_position_with_angle_and_length(arrow_part_angle, arrow_part_length)
     actions.user.diagram_drawing_draw_line(destination, destination + arrow_difference)
+
+def draw_arrow(angleInDegrees: float, size: int, position: MousePosition):
+    angleInRadians = angleInDegrees*pi/180
+    arrow_length_distance: MousePosition = compute_difference_position_with_angle_and_length(angleInRadians, size)
+    arrow_tip_position: MousePosition = position + arrow_length_distance
+    arrow_halfs_angles = [angleInRadians + 5*pi/4, angleInRadians - 5*pi/4]
+    for arrow_half_angle in arrow_halfs_angles:
+        draw_arrow_half(arrow_half_angle, size, arrow_tip_position)
+    
+def draw_arrow_half(angle: float, size: int, arrow_tip: MousePosition):
+    arrow_difference = compute_difference_position_with_angle_and_length(angle, size)
+    ending: MousePosition = arrow_tip + arrow_difference
+    actions.user.diagram_drawing_draw_line(arrow_tip, ending)
 
 def compute_difference_position_with_angle_and_length(angle: float, length: int):
     horizontal = int(cos(angle)*length)
