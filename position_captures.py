@@ -25,7 +25,7 @@ class Actions:
         elif type(specifier) == List:
             return actions.user.get_position_along_axes(*specifier)
         
-    def diagram_drawing_go_to_position_from_specifier(specifier: Union[int, List]):
+    def diagram_drawing_move_mouse_to_position(specifier: Union[int, List]):
         ''''''
         position = actions.user.diagram_drawing_get_position_from_specifier(specifier)
         position.go()
