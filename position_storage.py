@@ -99,11 +99,6 @@ def store_line_in_main_storage(origin: MousePosition, destination: MousePosition
 
 @module.action_class
 class Actions:
-    def diagram_drawing_move_mouse_to_position(position_number: int):
-        ''''''
-        position = main_position_storage.get_position_indexed_from_one(position_number)
-        position.go()
-    
     def diagram_drawing_show_numbering():
         ''''''
         main_position_storage.display_positions()
