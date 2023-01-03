@@ -24,10 +24,9 @@ class Actions:
         if type(specifier) == int:
             return actions.user.diagram_drawing_get_position(specifier)
         elif type(specifier) == list:
-            return actions.user.diagram_drawing_go_to_position_along_axes(*specifier)
-        print('specifier', specifier)
+            return actions.user.diagram_drawing_get_position_along_axes(*specifier)
         
     def diagram_drawing_move_mouse_to_position(specifier: PositionSpecifier):
         ''''''
-        position = actions.user.diagram_drawing_get_position_from_specifier(specifier)
+        position: MousePosition = actions.user.diagram_drawing_get_position_from_specifier(specifier)
         position.go()
