@@ -239,6 +239,12 @@ class Actions:
         ''''''
         global current_graph
         current_graph.move_mouse_along_axes(primary_amount, secondary_amount, tertiary_amount)
+    
+    def diagram_drawing_get_position_along_axes(primary_amount: float, secondary_amount: float = 0, tertiary_amount: float = 0) -> MousePosition:
+        ''''''
+        global current_graph
+        position = current_graph.get_position_along_axes(primary_amount, secondary_amount, tertiary_amount)
+        return position
 
     def diagram_drawing_draw_point_at(primary_amount: float, secondary_amount: float = 0, tertiary_amount: float = 0):
         ''''''
