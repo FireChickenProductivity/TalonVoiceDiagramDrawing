@@ -72,9 +72,9 @@ class Actions:
         actions.user.diagram_drawing_draw_vector_between_stored_positions(origin_position_number, destination_position_number)
         label_average_named_position_with(origin_position_number, destination_position_number, label)
     
-    def diagram_drawing_cross_out_stored_position(position_number: int):
+    def diagram_drawing_cross_out_named_position(position_specifier: PositionSpecifier):
         ''''''
-        position = main_position_storage.get_position_indexed_from_one(position_number)
+        position = actions.user.diagram_drawing_get_position_from_specifier(position_specifier)
         cross_out_at_position(position)
 
     def diagram_drawing_draw_arrowhead_at_cursor(angleInDegrees: float, length: int = 10):
