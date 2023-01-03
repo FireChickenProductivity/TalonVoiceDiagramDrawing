@@ -60,17 +60,17 @@ class Actions:
         draw_and_store_line_between_points(origin, destination)
         draw_arrow_after_line(origin, destination)
 
-    def diagram_drawing_draw_vector_between_stored_positions(origin_position_number: int, destination_position_number: int):
+    def diagram_drawing_draw_vector_between_named_positions(origin_position_specifier: PositionSpecifier, destination_position_specifier: PositionSpecifier):
         ''''''
-        origin = main_position_storage.get_position_indexed_from_one(origin_position_number)
-        destination = main_position_storage.get_position_indexed_from_one(destination_position_number)
+        origin = actions.user.diagram_drawing_get_position_from_specifier(origin_position_specifier)
+        destination = actions.user.diagram_drawing_get_position_from_specifier(destination_position_specifier)
         draw_and_store_line_between_points(origin, destination)
         draw_arrow_after_line(origin, destination)
 
-    def diagram_drawing_draw_vector_between_stored_positions_with_label(origin_position_number: int, destination_position_number: int, label: str):
+    def diagram_drawing_draw_vector_between_named_positions_with_label(origin_position_specifier: PositionSpecifier, destination_position_specifier: PositionSpecifier, label: str):
         ''''''
-        actions.user.diagram_drawing_draw_vector_between_stored_positions(origin_position_number, destination_position_number)
-        label_average_named_position_with(origin_position_number, destination_position_number, label)
+        actions.user.diagram_drawing_draw_vector_between_named_positions(origin_position_specifier, destination_position_specifier)
+        label_average_named_position_with(origin_position_specifier, destination_position_specifier, label)
     
     def diagram_drawing_cross_out_named_position(position_specifier: PositionSpecifier):
         ''''''
