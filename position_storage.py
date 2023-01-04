@@ -120,3 +120,7 @@ class Actions:
         ''''''
         position = main_position_storage.get_position_indexed_from_one(position_number)
         return position
+    
+    def diagram_drawing_store_current_position():
+        ''''''
+        store_current_position_in_main_storage()
