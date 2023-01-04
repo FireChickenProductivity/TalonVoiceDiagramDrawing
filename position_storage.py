@@ -70,8 +70,8 @@ def get_position_storage_representation(position: MousePosition) -> str:
 
 def get_position_from_storage_representation(representation: str) -> MousePosition:
     coordinates = representation.split(' ')
-    horizontal = int(coordinates[0])
-    vertical = int(coordinates[1])
+    horizontal = int(float(coordinates[0]))
+    vertical = int(float(coordinates[1]))
     position = MousePosition(horizontal, vertical)
     return position
 
