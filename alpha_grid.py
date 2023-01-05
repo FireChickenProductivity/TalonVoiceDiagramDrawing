@@ -41,8 +41,8 @@ class AlphaGrid:
     def setup(self, text_size):
         # draw_grid_lines - if true draw grid lines
         # upper left corner position1
-        self.position1 = canvas_origin.get()
-        self.position2 = canvas_ending.get()
+        self.position1 = actions.user.diagram_drawing_get_canvas_origin()
+        self.position2 = actions.user.diagram_drawing_get_canvas_ending()
         if self.mcanvas is not None:
             self.mcanvas.close()
         distance_between_points = self.position1.distance_from(self.position2)
@@ -165,11 +165,3 @@ class Actions:
         current_value = show_grid_lines_file.get()
         show_grid_lines_file.set(not current_value)
         grid.refresh()
-    
-    def diagram_drawing_update_canvas_origin_to_current_mouse_position():
-        ''''''
-        canvas_origin.set_to_current_mouse_position()
-    
-    def diagram_drawing_update_canvas_ending_to_current_mouse_position():
-        ''''''
-        canvas_ending.set_to_current_mouse_position()
