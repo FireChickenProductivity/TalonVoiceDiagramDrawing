@@ -1,4 +1,4 @@
-from talon import Context, actions, Module
+from talon import Context, actions, Module, ctrl
 from ....fire_chicken.mouse_position import MousePosition
 
 module = Module()
@@ -34,9 +34,31 @@ class Actions:
         ''''''
         left_click()
         left_click()
+    
+    def diagram_drawing_start_freestyle_drawing():
+        ''''''
+        actions.user.diagram_drawing_unselect()
+        toggle_pencil_tool()
+        hold_left_mouse_button_down()
+    
+    def diagram_drawing_stop_freestyle_drawing():
+        ''''''
+        release_left_mouse_button()
+        toggle_pencil_tool()
+        actions.user.diagram_drawing_unselect()
+        
 
 def activate_line_drawing_tool():
     actions.key('v')
 
 def left_click():
     actions.mouse_click(0)
+
+def toggle_pencil_tool():
+    actions.key('p')
+
+def hold_left_mouse_button_down():
+    ctrl.mouse_click(button=0, down=True)
+
+def release_left_mouse_button():
+    ctrl.mouse_click(button=0, up=True)

@@ -1,7 +1,9 @@
+import math
 from talon import actions, Module
 from .fire_chicken.mouse_position import MousePosition
 from .directions import Direction
 from .position_storage import store_line_in_main_storage, main_position_storage
+from .position_captures import PositionSpecifier
 from math import atan2, pi, cos, sin
 
 module = Module()
@@ -41,39 +43,46 @@ class Actions:
         direction_adjusted_vertical: int = direction.vertical*vertical
         actions.user.diagram_drawing_draw_line_from_cursor(direction_adjusted_horizontal, direction_adjusted_vertical)
 
-    def diagram_drawing_draw_line_between_stored_positions(origin_position_number: int, destination_position_number: int):
+    def diagram_drawing_draw_line_between_named_positions(origin_position_specifier: PositionSpecifier, destination_position_specifier: PositionSpecifier):
         ''''''
-        origin = main_position_storage.get_position_indexed_from_one(origin_position_number)
-        destination = main_position_storage.get_position_indexed_from_one(destination_position_number)
+        origin = actions.user.diagram_drawing_get_position_from_specifier(origin_position_specifier)
+        destination = actions.user.diagram_drawing_get_position_from_specifier(destination_position_specifier)
         actions.user.diagram_drawing_draw_line(origin, destination)
         store_line_in_main_storage(origin, destination)
     
-    def diagram_drawing_draw_line_between_stored_positions_with_label(origin_position_number: int, destination_position_number: int, label: str):
+    def diagram_drawing_draw_line_between_named_positions_with_label(origin_position_specifier: PositionSpecifier, destination_position_specifier: PositionSpecifier, label: str):
         ''''''
-        actions.user.diagram_drawing_draw_line_between_stored_positions(origin_position_number, destination_position_number)
-        label_average_position_with(origin_position_number, destination_position_number, label)
+        actions.user.diagram_drawing_draw_line_between_named_positions(origin_position_specifier, destination_position_specifier)
+        label_average_named_position_with(origin_position_specifier, destination_position_specifier, label)
     
     def diagram_drawing_draw_vector(origin: MousePosition, destination: MousePosition):
         ''''''
         draw_and_store_line_between_points(origin, destination)
         draw_arrow_after_line(origin, destination)
 
-    def diagram_drawing_draw_vector_between_stored_positions(origin_position_number: int, destination_position_number: int):
+    def diagram_drawing_draw_vector_between_named_positions(origin_position_specifier: PositionSpecifier, destination_position_specifier: PositionSpecifier):
         ''''''
-        origin = main_position_storage.get_position_indexed_from_one(origin_position_number)
-        destination = main_position_storage.get_position_indexed_from_one(destination_position_number)
+        origin = actions.user.diagram_drawing_get_position_from_specifier(origin_position_specifier)
+        destination = actions.user.diagram_drawing_get_position_from_specifier(destination_position_specifier)
         draw_and_store_line_between_points(origin, destination)
         draw_arrow_after_line(origin, destination)
 
-    def diagram_drawing_draw_vector_between_stored_positions_with_label(origin_position_number: int, destination_position_number: int, label: str):
+    def diagram_drawing_draw_vector_between_named_positions_with_label(origin_position_specifier: PositionSpecifier, destination_position_specifier: PositionSpecifier, label: str):
         ''''''
-        actions.user.diagram_drawing_draw_vector_between_stored_positions(origin_position_number, destination_position_number)
-        label_average_position_with(origin_position_number, destination_position_number, label)
+        actions.user.diagram_drawing_draw_vector_between_named_positions(origin_position_specifier, destination_position_specifier)
+        label_average_named_position_with(origin_position_specifier, destination_position_specifier, label)
     
-    def diagram_drawing_cross_out_stored_position(position_number: int):
+    def diagram_drawing_cross_out_named_position(position_specifier: PositionSpecifier):
         ''''''
-        position = main_position_storage.get_position_indexed_from_one(position_number)
+        position = actions.user.diagram_drawing_get_position_from_specifier(position_specifier)
         cross_out_at_position(position)
+
+    def diagram_drawing_draw_arrowhead_at_cursor(angleInDegrees: float, length: int = 10):
+        ''''''
+        draw_arrow(angleInDegrees, length, MousePosition.current())
+    
+
+
 
 def draw_and_store_line_between_points(origin: MousePosition, destination: MousePosition):
     actions.user.diagram_drawing_draw_line(origin, destination)
@@ -90,6 +99,19 @@ def draw_arrow_half_after_line(origin: MousePosition, destination: MousePosition
     arrow_part_length = position_difference.distance_from(MousePosition(0, 0))//8 + 3
     arrow_difference = compute_difference_position_with_angle_and_length(arrow_part_angle, arrow_part_length)
     actions.user.diagram_drawing_draw_line(destination, destination + arrow_difference)
+
+def draw_arrow(angleInDegrees: float, size: int, position: MousePosition):
+    angleInRadians = angleInDegrees*pi/180
+    arrow_length_distance: MousePosition = compute_difference_position_with_angle_and_length(angleInRadians, size)
+    arrow_tip_position: MousePosition = position + arrow_length_distance
+    arrow_halfs_angles = [angleInRadians + 5*pi/4, angleInRadians - 5*pi/4]
+    for arrow_half_angle in arrow_halfs_angles:
+        draw_arrow_half(arrow_half_angle, size, arrow_tip_position)
+    
+def draw_arrow_half(angle: float, size: int, arrow_tip: MousePosition):
+    arrow_difference = compute_difference_position_with_angle_and_length(angle, size)
+    ending: MousePosition = arrow_tip + arrow_difference
+    actions.user.diagram_drawing_draw_line(arrow_tip, ending)
 
 def compute_difference_position_with_angle_and_length(angle: float, length: int):
     horizontal = int(cos(angle)*length)
@@ -114,9 +136,9 @@ def computer_average(number1, number2):
     average = (number1 + number2)/2
     return average
 
-def label_average_position_with(origin_position_number: int, destination_position_number: int, label: str):
-    origin = main_position_storage.get_position_indexed_from_one(origin_position_number)
-    destination = main_position_storage.get_position_indexed_from_one(destination_position_number)
+def label_average_named_position_with(origin_position_specifier: PositionSpecifier, destination_position_specifier: PositionSpecifier, label: str):
+    origin = actions.user.diagram_drawing_get_position_from_specifier(origin_position_specifier)
+    destination = actions.user.diagram_drawing_get_position_from_specifier(destination_position_specifier)
     middle_position = compute_position_average(origin, destination)
     middle_position.go()
     actions.user.diagram_drawing_create_text_field()
