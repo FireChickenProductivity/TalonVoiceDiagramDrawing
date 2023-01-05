@@ -46,7 +46,10 @@ class Actions:
         release_left_mouse_button()
         toggle_pencil_tool()
         actions.user.diagram_drawing_unselect()
-        
+    
+    def diagram_drawing_get_drawing_application_name() -> str:
+        ''''''
+        return 'Vectr'
 
 def activate_line_drawing_tool():
     actions.key('v')
