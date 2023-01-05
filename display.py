@@ -23,7 +23,7 @@
 
 
 
-from talon import canvas, ui
+from talon import canvas, ui, actions
 from talon.skia import Paint, Rect
 
 class PositionNumberingDisplay:
@@ -33,22 +33,13 @@ class PositionNumberingDisplay:
         self.mcanvas = None
 
     def setup(self, *, rect: Rect = None, screen_num: int = None):
-        screens = ui.screens()
-        if rect is not None:
-            try:
-                screen = ui.screen_containing(*rect.center)
-            except Exception:
-                rect = None
-        if rect is None and screen_num is not None:
-            screen = screens[screen_num % len(screens)]
-            rect = screen.rect
-        if rect is None:
-            screen = screens[0]
-            rect = screen.rect
-        self.rect = rect.copy()
+        origin = actions.user.diagram_drawing_get_canvas_origin()
+        ending = actions.user.diagram_drawing_get_canvas_ending()
         if self.mcanvas is not None:
             self.mcanvas.close()
-        self.mcanvas = canvas.Canvas.from_screen(screen)
+        distance_between_points = origin.distance_from(ending)
+        self.mcanvas = canvas.Canvas(0, 0, distance_between_points, distance_between_points)
+        self.mcanvas.move(origin.get_horizontal(), origin.get_vertical())
         
     def show(self, positions, text_size = 20):
         self.positions = positions

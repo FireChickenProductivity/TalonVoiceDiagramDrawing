@@ -31,3 +31,7 @@ class Actions:
     def diagram_drawing_stop_freestyle_drawing():
         '''Stops freestyle drawing where moving the cursor draws'''
         pass
+
+    def diagram_drawing_get_drawing_application_name() -> str:
+        '''Gives the name of the current drawing application. This is used by some file storage code.'''
+        return ''
