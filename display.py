@@ -32,7 +32,7 @@ class PositionNumberingDisplay:
         self.rect = None
         self.mcanvas = None
 
-    def setup(self, *, rect: Rect = None, screen_num: int = None):
+    def setup(self):
         origin = actions.user.diagram_drawing_get_canvas_origin()
         ending = actions.user.diagram_drawing_get_canvas_ending()
         if self.mcanvas is not None:
