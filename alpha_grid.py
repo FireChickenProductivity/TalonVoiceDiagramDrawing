@@ -134,8 +134,6 @@ grid = AlphaGrid()
 
 storage = RelativeStorage(__file__, 'data')
 show_grid_lines_file = storage.get_boolean_file('ShowAlphaGridLines.txt')
-canvas_origin = storage.get_position_file('CanvasOrigin.txt')
-canvas_ending = storage.get_position_file('CanvasEnding.txt')
 
 module = Module()
 @module.action_class
