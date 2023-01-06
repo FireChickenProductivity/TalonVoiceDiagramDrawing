@@ -7,4 +7,6 @@ tag: user.diagram_drawing
 
 #Using saved positions
 quad <user.diagram_drawing_number_float>: 
-    user.draw_quadratic_between_saved_positions(diagram_drawing_number_float)
+    user.draw_quadratic_between_saved_positions_with_slope(diagram_drawing_number_float)
+dash quad <user.diagram_drawing_number_float>: 
+    user.draw_dashed_quadratic_between_saved_positions_with_slope(diagram_drawing_number_float)
