@@ -207,6 +207,12 @@ class Actions:
         ending = actions.user.diagram_drawing_get_position_from_specifier(ending_position_specifier)
         actions.user.draw_quadratic_between_points_with_slope(start, ending, initial_slope)
     
+    def draw_quadratic_between_saved_positions(initial_slope: float):
+        ''''''
+        start = actions.user.diagram_drawing_get_saved_position(1)
+        ending = actions.user.diagram_drawing_get_saved_position(2)
+        actions.user.draw_quadratic_between_points_with_slope(start, ending, initial_slope)
+
     def draw_dashed_quadratic_between_named_positions_with_slope(initial_position_specifier: PositionSpecifier, ending_position_specifier: PositionSpecifier, initial_slope: float):
         ''''''
         start = actions.user.diagram_drawing_get_position_from_specifier(initial_position_specifier)
