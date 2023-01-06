@@ -247,11 +247,20 @@ class Actions:
         curve_positions = compute_curved_points_shifted_fractionally(line_positions, shift_factor, divisor)
         draw_points(curve_positions)
     
+    def diagram_drawing_draw_two_slope_curve_between_points(starting_slope: float, ending_slope: float, start: MousePosition, ending: MousePosition):
+        ''''''
+        curve = BezierQuadratic.compute_from_start_ending_and_slopes(start, ending, starting_slope, ending_slope)
+        points = curve.compute_points()
+        draw_points(points)
+    
     def diagram_drawing_draw_two_slope_curve(initial_position_specifier: PositionSpecifier, ending_position_specifier: PositionSpecifier, starting_slope: float, ending_slope: float):
         ''''''
         origin = actions.user.diagram_drawing_get_position_from_specifier(initial_position_specifier)
         destination = actions.user.diagram_drawing_get_position_from_specifier(ending_position_specifier)
-        curve = BezierQuadratic.compute_from_start_ending_and_slopes(origin, destination, starting_slope, ending_slope)
-        points = curve.compute_points()
-        draw_points(points)
-        curve.control_point.go()
+        actions.user.diagram_drawing_draw_two_slope_curve_between_points(starting_slope, ending_slope, origin, destination)
+    
+    def diagram_drawing_draw_two_slope_curve_between_saved_positions(starting_slope: float, ending_slope: float):
+        ''''''
+        origin = actions.user.diagram_drawing_get_saved_position(1)
+        destination = actions.user.diagram_drawing_get_saved_position(2)
+        actions.user.diagram_drawing_draw_two_slope_curve_between_points(starting_slope, ending_slope, origin, destination)
