@@ -23,6 +23,11 @@ class Actions:
         ''''''
         position_file = get_data_storage_position_file(name)
         position_file.set_to_current_mouse_position()
+    
+    def diagram_drawing_set_data_storage_position(name: str, position: MousePosition):
+        ''''''
+        position_file = get_data_storage_position_file(name)
+        position_file.set(position)
 
 def get_data_storage_position_file(name: str) -> data_storage.MousePositionFile:
     storage: data_storage.Storage = actions.user.diagram_drawing_compute_data_storage()
