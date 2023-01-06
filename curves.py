@@ -231,10 +231,10 @@ class Actions:
         curve_positions = compute_curved_points_shifted_fractionally(line_positions, shift_factor, divisor)
         draw_points(curve_positions)
     
-    def diagram_drawing_draw_two_slope_curve(origin_position_number: int, destination_position_number: int, starting_slope: float, ending_slope: float):
+    def diagram_drawing_draw_two_slope_curve(initial_position_specifier: PositionSpecifier, ending_position_specifier: PositionSpecifier, starting_slope: float, ending_slope: float):
         ''''''
-        origin = main_position_storage.get_position_indexed_from_one(origin_position_number)
-        destination = main_position_storage.get_position_indexed_from_one(destination_position_number)
+        origin = actions.user.diagram_drawing_get_position_from_specifier(initial_position_specifier)
+        destination = actions.user.diagram_drawing_get_position_from_specifier(ending_position_specifier)
         curve = BezierQuadratic.compute_from_start_ending_and_slopes(origin, destination, starting_slope, ending_slope)
         points = curve.compute_points()
         draw_points(points)
