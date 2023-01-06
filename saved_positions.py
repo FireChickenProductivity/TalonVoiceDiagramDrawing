@@ -12,7 +12,7 @@ class Actions:
     def diagram_drawing_save_named_position(number: int, specifier: PositionSpecifier):
         ''''''
         position = actions.user.diagram_drawing_get_position_from_specifier(specifier)
-        actions.user.diagram_drawing_save_position(position, number)
+        actions.user.diagram_drawing_save_position(number, position)
 
     def diagram_drawing_get_saved_position(number: int) -> MousePosition:
         ''''''
