@@ -1,5 +1,8 @@
 tag: user.diagram_drawing
 -
-<number> and <number> quad <user.diagram_drawing_number_float>: user.draw_quadratic_between_stored_positions_with_slope(number_1, number_2, diagram_drawing_number_float)
-<number> and <number> dash quad <user.diagram_drawing_number_float>: user.draw_dashed_quadratic_between_stored_positions_with_slope(number_1, number_2, diagram_drawing_number_float)
-<number> and <number> curve <user.diagram_drawing_number_float> slope <user.diagram_drawing_number_float>: user.diagram_drawing_draw_two_slope_curve(number_1, number_2, diagram_drawing_number_float_1, diagram_drawing_number_float_2)
+<user.diagram_drawing_position_specifier> and <user.diagram_drawing_position_specifier> quad <user.diagram_drawing_number_float>: 
+    user.draw_quadratic_between_stored_positions_with_slope(diagram_drawing_position_specifier_1, diagram_drawing_position_specifier_2, diagram_drawing_number_float)
+<user.diagram_drawing_position_specifier> and <user.diagram_drawing_position_specifier> dash quad <user.diagram_drawing_number_float>: 
+    user.draw_dashed_quadratic_between_stored_positions_with_slope(diagram_drawing_position_specifier_1, diagram_drawing_position_specifier_2, diagram_drawing_number_float)
+<user.diagram_drawing_position_specifier> and <user.diagram_drawing_position_specifier> curve <user.diagram_drawing_number_float> slope <user.diagram_drawing_number_float>: 
+    user.diagram_drawing_draw_two_slope_curve(diagram_drawing_position_specifier_1, diagram_drawing_position_specifier_2, diagram_drawing_number_float_1, diagram_drawing_number_float_2)
