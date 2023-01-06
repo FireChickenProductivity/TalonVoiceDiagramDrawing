@@ -1,6 +1,7 @@
 from talon import Module, actions
 from .fire_chicken.mouse_position import MousePosition
 from .position_storage import main_position_storage
+from .position_captures import PositionSpecifier
 from enum import Enum
 import math
 
@@ -200,16 +201,16 @@ class Actions:
         points = quadratic.compute_points_between(start, ending)
         draw_points(points)
     
-    def draw_quadratic_between_stored_positions_with_slope(initial_position_number: int, ending_position_number: int, initial_slope: float):
+    def draw_quadratic_between_named_positions_with_slope(initial_position_specifier: PositionSpecifier, ending_position_specifier: PositionSpecifier, initial_slope: float):
         ''''''
-        start = actions.user.diagram_drawing_get_position(initial_position_number)
-        ending = actions.user.diagram_drawing_get_position(ending_position_number)
+        start = actions.user.diagram_drawing_get_position_from_specifier(initial_position_specifier)
+        ending = actions.user.diagram_drawing_get_position_from_specifier(ending_position_specifier)
         actions.user.draw_quadratic_between_points_with_slope(start, ending, initial_slope)
     
-    def draw_dashed_quadratic_between_stored_positions_with_slope(initial_position_number: int, ending_position_number: int, initial_slope: float):
+    def draw_dashed_quadratic_between_named_positions_with_slope(initial_position_specifier: PositionSpecifier, ending_position_specifier: PositionSpecifier, initial_slope: float):
         ''''''
-        start = actions.user.diagram_drawing_get_position(initial_position_number)
-        ending = actions.user.diagram_drawing_get_position(ending_position_number)
+        start = actions.user.diagram_drawing_get_position_from_specifier(initial_position_specifier)
+        ending = actions.user.diagram_drawing_get_position_from_specifier(ending_position_specifier)
         quadratic = Quadratic.from_positions_and_initial_slope(start, ending, initial_slope)
         points = quadratic.compute_points_between(start, ending)
         draw_curve_dashed(points)
@@ -230,10 +231,10 @@ class Actions:
         curve_positions = compute_curved_points_shifted_fractionally(line_positions, shift_factor, divisor)
         draw_points(curve_positions)
     
-    def diagram_drawing_draw_two_slope_curve(origin_position_number: int, destination_position_number: int, starting_slope: float, ending_slope: float):
+    def diagram_drawing_draw_two_slope_curve(initial_position_specifier: PositionSpecifier, ending_position_specifier: PositionSpecifier, starting_slope: float, ending_slope: float):
         ''''''
-        origin = main_position_storage.get_position_indexed_from_one(origin_position_number)
-        destination = main_position_storage.get_position_indexed_from_one(destination_position_number)
+        origin = actions.user.diagram_drawing_get_position_from_specifier(initial_position_specifier)
+        destination = actions.user.diagram_drawing_get_position_from_specifier(ending_position_specifier)
         curve = BezierQuadratic.compute_from_start_ending_and_slopes(origin, destination, starting_slope, ending_slope)
         points = curve.compute_points()
         draw_points(points)
