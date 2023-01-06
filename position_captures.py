@@ -1,7 +1,7 @@
 from talon import Module, actions
 from typing import Union, List
 from .fire_chicken.mouse_position import MousePosition
-PositionSpecifier = Union[int, List]
+PositionSpecifier = Union[int, List, str]
 
 module = Module()
 @module.capture(rule = '<number>|<user.diagram_drawing_number_float> by <user.diagram_drawing_number_float> [by <user.diagram_drawing_number_float>]|<user.letter> <user.letter>')
