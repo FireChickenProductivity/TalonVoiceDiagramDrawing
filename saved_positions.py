@@ -13,6 +13,10 @@ class Actions:
         ''''''
         position = actions.user.diagram_drawing_get_position_from_specifier(specifier)
         actions.user.diagram_drawing_save_position(number, position)
+    
+    def diagram_drawing_save_current_position(number: int):
+        ''''''
+        actions.user.diagram_drawing_save_position(number, MousePosition.current())
 
     def diagram_drawing_get_saved_position(number: int) -> MousePosition:
         ''''''
