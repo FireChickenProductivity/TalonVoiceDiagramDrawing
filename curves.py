@@ -1,6 +1,7 @@
 from talon import Module, actions
 from .fire_chicken.mouse_position import MousePosition
 from .position_storage import main_position_storage
+from .position_captures import PositionSpecifier
 from enum import Enum
 import math
 
@@ -200,10 +201,10 @@ class Actions:
         points = quadratic.compute_points_between(start, ending)
         draw_points(points)
     
-    def draw_quadratic_between_stored_positions_with_slope(initial_position_number: int, ending_position_number: int, initial_slope: float):
+    def draw_quadratic_between_named_positions_with_slope(initial_position_specifier: PositionSpecifier, ending_position_specifier: PositionSpecifier, initial_slope: float):
         ''''''
-        start = actions.user.diagram_drawing_get_position(initial_position_number)
-        ending = actions.user.diagram_drawing_get_position(ending_position_number)
+        start = actions.user.diagram_drawing_get_position_from_specifier(initial_position_specifier)
+        ending = actions.user.diagram_drawing_get_position_from_specifier(ending_position_specifier)
         actions.user.draw_quadratic_between_points_with_slope(start, ending, initial_slope)
     
     def draw_dashed_quadratic_between_stored_positions_with_slope(initial_position_number: int, ending_position_number: int, initial_slope: float):
