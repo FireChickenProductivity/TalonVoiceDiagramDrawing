@@ -215,10 +215,10 @@ class Actions:
         points = quadratic.compute_points_between(start, ending)
         draw_curve_dashed(points)
     
-    def diagram_drawing_draw_dashed_line_between_stored_positions(origin_position_number: int, destination_position_number: int):
+    def diagram_drawing_draw_dashed_line_between_named_positions(initial_position_specifier: PositionSpecifier, ending_position_specifier: PositionSpecifier):
         ''''''
-        origin = main_position_storage.get_position_indexed_from_one(origin_position_number)
-        destination = main_position_storage.get_position_indexed_from_one(destination_position_number)
+        origin = actions.user.diagram_drawing_get_position_from_specifier(initial_position_specifier)
+        destination = actions.user.diagram_drawing_get_position_from_specifier(ending_position_specifier)
         line_positions = compute_line_points(origin, destination)
         draw_curve_dashed(line_positions)
     

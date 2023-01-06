@@ -22,5 +22,5 @@ cross [out] <user.diagram_drawing_position_specifier>: user.diagram_drawing_cros
 
 arrow [new] <number>: user.diagram_drawing_draw_arrowhead_at_cursor(number)
 
-<number> dash stripe <number>:
-    user.diagram_drawing_draw_dashed_line_between_stored_positions(number_1, number_2)
+<user.diagram_drawing_position_specifier> dash stripe <user.diagram_drawing_position_specifier>:
+    user.diagram_drawing_draw_dashed_line_between_named_positions(diagram_drawing_position_specifier_1, diagram_drawing_position_specifier_2)
