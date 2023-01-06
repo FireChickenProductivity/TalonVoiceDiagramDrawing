@@ -4,6 +4,14 @@ tag: user.diagram_drawing
 <user.diagram_drawing_position_specifier> save <user.diagram_drawing_position_specifier>:
     user.diagram_drawing_save_named_position(1, diagram_drawing_position_specifier_1)
     user.diagram_drawing_save_named_position(2, diagram_drawing_position_specifier_2)
+<user.diagram_drawing_position_specifier> save one:
+    user.diagram_drawing_save_named_position(1, diagram_drawing_position_specifier)
+<user.diagram_drawing_position_specifier> save two:
+    user.diagram_drawing_save_named_position(2, diagram_drawing_position_specifier)
+save (this|here|that) one:
+    user.diagram_drawing_save_current_position(1)
+save (this|here|that) two:
+    user.diagram_drawing_save_current_position(2)
 
 #Using saved positions
 quad <user.diagram_drawing_number_float>: 
