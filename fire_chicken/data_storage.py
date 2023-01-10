@@ -128,7 +128,7 @@ class JSONFile(StorageFile):
         return self.converter.convert_object_to_json(self.value)
   
     def get_value_from_text(self, text: str):
-        self.converter.convert_json_to_object(text)
+        return self.converter.convert_json_to_object(text)
     
     def _get_initial_value(self):
         return self.initial_value
