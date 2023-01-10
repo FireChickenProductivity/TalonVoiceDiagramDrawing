@@ -281,6 +281,7 @@ class Actions:
         ''''''
         actions.user.diagram_drawing_start_freestyle_drawing()
         current_position = MousePosition.current()
+        actions.user.diagram_drawings_store_position(current_position)
         for i in range(dot_radius.get()):
             draw_dot_circle(current_position, i, circle_drawing_delay.get())
         actions.user.diagram_drawing_stop_freestyle_drawing()
