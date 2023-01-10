@@ -47,6 +47,16 @@ def draw_dot_circle(center: MousePosition, radius: int, delay: float = 0.02):
         actions.sleep(delay)
     positions[0].go()
 
+def draw_open_dot_circle(center: MousePosition, radius: int, delay: float = 0.02):
+    positions = compute_circle_points(center, radius)
+    positions[0].go()
+    actions.user.diagram_drawing_start_freestyle_drawing()
+    for position in positions:
+        position.go()
+        actions.sleep(delay)
+    positions[0].go()
+    actions.user.diagram_drawing_stop_freestyle_drawing()
+
 def compute_circle_points(center: MousePosition, radius: int):
     circle_top_half = compute_circle_top_half_points(center, radius)
     circle_bottom_half = compute_position_array_flipped_around_horizontal(circle_top_half, center.get_vertical())
@@ -281,11 +291,17 @@ class Actions:
         ''''''
         actions.user.diagram_drawing_start_freestyle_drawing()
         current_position = MousePosition.current()
-        actions.user.diagram_drawings_store_position(current_position)
+        actions.user.diagram_drawing_store_position(current_position)
         for i in range(dot_radius.get()):
             draw_dot_circle(current_position, i, circle_drawing_delay.get())
         actions.user.diagram_drawing_stop_freestyle_drawing()
     
+    def diagram_drawing_draw_open_dot():
+        ''''''
+        current_position = MousePosition.current()
+        actions.user.diagram_drawing_store_position(current_position)
+        draw_open_dot_circle(current_position, dot_radius.get(), circle_drawing_delay.get())
+
     def diagram_drawing_new_graph():
         ''''''
         make_new_graph(2)
@@ -325,6 +341,12 @@ class Actions:
         global current_graph
         current_graph.move_mouse_along_axes(primary_amount, secondary_amount, tertiary_amount)
         actions.user.diagram_drawing_draw_dot()
+    
+    def diagram_drawing_draw_open_point_at(primary_amount: float, secondary_amount: float = 0, tertiary_amount: float = 0):
+        ''''''
+        global current_graph
+        current_graph.move_mouse_along_axes(primary_amount, secondary_amount, tertiary_amount)
+        actions.user.diagram_drawing_draw_open_dot()
     
     def diagram_drawing_edit_axis(number: int):
         ''''''
