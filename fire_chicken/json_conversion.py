@@ -9,7 +9,7 @@ class JSONConverter:
         return self.json_from_object_converter.convert_object(value)
 
     def convert_json_to_object(self, text):
-        self.object_from_json_converter.convert_json(text)
+        return self.object_from_json_converter.convert_json(text)
 
 class ObjectFromJSONConverter:
     def __init__(self, object_from_json):
