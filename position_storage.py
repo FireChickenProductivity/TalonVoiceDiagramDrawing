@@ -124,3 +124,7 @@ class Actions:
     def diagram_drawing_store_current_position():
         ''''''
         store_current_position_in_main_storage()
+    
+    def diagram_drawing_store_position(position: MousePosition):
+        ''''''
+        store_position_in_main_storage(position)
