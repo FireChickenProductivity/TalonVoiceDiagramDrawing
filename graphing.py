@@ -1,5 +1,6 @@
 from talon import Module, actions, Context
 from .fire_chicken.mouse_position import MousePosition
+from .fire_chicken.data_storage import JSONFile, Storage
 import math
 from .text_fields import give_active_text_field_text
 
@@ -32,7 +33,7 @@ default_tick_spacing = module.setting(
 )
 
 axis_length_unit = module.setting(
-    'diagram_drawing_axis_lengthy_unit',
+    'diagram_drawing_axis_length_unit',
     type = int,
     default = 20,
     desc = 'The unit for determining axis length in pixels'
@@ -75,12 +76,37 @@ def compute_position_array_flipped_around_horizontal(positions, horizontal_heigh
 
 class Axis:
     def __init__(self, origin: MousePosition, start: MousePosition, ending: MousePosition, tick_spacing: int):
-        self.origin = origin
-        self.start = start
-        self.ending = ending
+        self.origin = compute_integer_position(origin)
+        self.start = compute_integer_position(start)
+        self.ending = compute_integer_position(ending)
         self.tick_spacing = tick_spacing
         self.starting_ticks = []
         self.ending_ticks = []
+
+    def to_json(self):
+        representation = {}
+        representation['origin'] = str(self.origin)
+        representation['start'] = str(self.start)
+        representation['ending'] = str(self.ending)
+        representation['tick_spacing'] = self.tick_spacing
+        representation['starting_ticks'] = self.starting_ticks
+        representation['ending_ticks'] = self.ending_ticks
+        return representation
+    
+    @classmethod
+    def from_json(cls, representation):
+        axis = Axis(MousePosition.from_text(representation['origin']), MousePosition.from_text(representation['start']), MousePosition.from_text(representation['ending']), representation['tick_spacing'])
+        axis.starting_ticks = representation['starting_ticks']
+        axis.ending_ticks = representation['ending_ticks']
+        return axis
+    
+    def __str__(self) -> str:
+        dictionary_representation = self.to_json()
+        string_representation = str(dictionary_representation)
+        return string_representation
+    
+    def __repr__(self) -> str:
+        return self.__str__()
     
     def draw(self):
         actions.user.diagram_drawing_draw_line(self.start, self.ending)
@@ -135,6 +161,34 @@ class Graph:
         self.origin = origin
         self.dimensions = dimensions
     
+    def to_json(self):
+        representation = {}
+        representation['origin'] = str(self.origin)
+        representation['dimensions'] = self.dimensions
+        axes_representation = []
+        for axis in self.axes:
+            axis_representation = axis.to_json()
+            axes_representation.append(axis_representation)
+        representation['axes'] = axes_representation
+        return representation
+    
+    @classmethod
+    def from_json(cls, representation):
+        if representation is None:
+            return None
+        origin = MousePosition.from_text(representation['origin'])
+        dimensions = representation['dimensions']
+        graph = Graph(origin, dimensions)
+        for axis in representation['axes']:
+            graph.axes.append(Axis.from_json(axis))
+        return graph
+
+    def __str__(self) -> str:
+        return str(self.to_json())
+    
+    def __repr__(self) -> str:
+        return str(self)
+
     def get_position_along_axes(self, primary_amount, secondary_amount = 0, tertiary_amount = 0) -> MousePosition:
         target_position: MousePosition = self.origin
         amounts_list = [primary_amount, secondary_amount, tertiary_amount]
@@ -200,9 +254,26 @@ def position_multiplied_by(position: MousePosition, factor):
     result = MousePosition(position.get_horizontal()*factor, position.get_vertical()*factor)
     return result
 
-current_graph = None
+def compute_integer_position(position: MousePosition) -> MousePosition:
+    return MousePosition(int(position.get_horizontal()), int(position.get_vertical()))
+
+storage: Storage = actions.user.diagram_drawing_compute_data_storage()
+graph_file: JSONFile = storage.get_json_file('Graph.json', from_json = Graph.from_json)
+
+current_graph = graph_file.get()
 graphing_context = Context()
 module.tag('diagram_drawing_graphing', desc = 'Activate diagram drawing graphing commands')
+
+def activate_graphing_tag():
+    global graphing_context
+    graphing_context.tags = ['user.diagram_drawing_graphing']
+
+def activate_graphing_tag_if_graph_defined():
+    global current_graph
+    if current_graph is not None:
+        activate_graphing_tag()
+activate_graphing_tag_if_graph_defined()
+
 current_axis = 1
 @module.action_class
 class Actions:
@@ -228,12 +299,14 @@ class Actions:
         current_graph = None
         global graphing_context
         graphing_context.tags = []
+        update_graph_file()
     
     def diagram_drawing_add_next_axis(starting_distance: int, ending_distance: int):
         ''''''
         global current_graph
         unit = axis_length_unit.get()
         current_graph.add_next_axis(starting_distance*unit, ending_distance*unit)
+        update_graph_file()
     
     def diagram_drawing_go_to_position_along_axes(primary_amount: float, secondary_amount: float = 0, tertiary_amount: float = 0):
         ''''''
@@ -272,9 +345,14 @@ def add_tick(axis_number, label, *, target_direction_toward_ending):
     global current_graph
     axis = current_graph.get_axes()[axis_number - 1]
     axis.add_tick(label, target_direction_toward_ending = target_direction_toward_ending)
+    update_graph_file()
 
 def make_new_graph(dimensions: int = 2):
     global current_graph
     current_graph = Graph(MousePosition.current(), dimensions)
-    global graphing_context
-    graphing_context.tags = ['user.diagram_drawing_graphing']
+    activate_graphing_tag()
+    update_graph_file()
+
+def update_graph_file():
+    global graph_file, current_graph
+    graph_file.set(current_graph)
