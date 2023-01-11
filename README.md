@@ -66,3 +66,6 @@ Saying "change (position specifier)" edits the text field at the specified locat
 Saying "fresh (position specifier)" edits the text field at the specified location and moves the text cursor to the end of the text field's first line.
 
 Saying "(position specifier) (value or val) (number)" creates a text field with the specified number as its text at the specified position.
+
+# Selection
+Saying "done" or "finish" unselects.
