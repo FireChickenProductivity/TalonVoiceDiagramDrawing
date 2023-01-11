@@ -25,3 +25,16 @@ Position specifiers are ways to specify positions to commands. Some commands wil
   Saying "alpha grid toggle lines" changes whether or not the lines corresponding to the alpha grid positions should be displayed.
   
   The word grid is optional in these commands.
+
+# Numbered Positions
+Some commands will automatically number positions so that they can be referred to by number.
+
+Saying "numbering show" shows the numbering. Note that only numbers within the canvas as specified with the above canvas commands will be shown.
+
+Saying "numbering hide" hides the numbering.
+
+Saying "numbering clear" opens up an are you sure dialog. Saying "yes I am sure" will clear the current numbering. Saying "no" closes the dialogue without clearing the numbering.
+
+Saying "number this", "number here", or "number that" manually numbers the current mouse position.
+
+The numbering is stored in a file and should be preserved across sessions.
