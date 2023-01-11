@@ -38,3 +38,16 @@ Saying "numbering clear" opens up an are you sure dialog. Saying "yes I am sure"
 Saying "number this", "number here", or "number that" manually numbers the current mouse position.
 
 The numbering is stored in a file and should be preserved across sessions.
+
+# Line Drawing
+Saying "line (up, down, left, or right) (an integer between 1 and 99)" will draw a line from the cursor's current position to a position in the direction specified by the specified integer amount. Saying "line up five" draws a line up from the cursor by five units.
+
+Saying "(position specifier) stripe (position specifier)" will draw a line between the position specifiers.
+
+Saying "(position specifier) stripe (position specifier) with (number)" will draw a line between the specified positions labeled in the middle with the number.
+
+Saying "(position specifier) vector (position specifier)" will draw an arrow from the first specified position to the second.
+
+Saying "(position specifier) vector (position specifier) with (number)" will draw an arrow from the first specified position to the second labeled in the middle with the number.
+
+Saying "(position specifier) dash stripe (position specifier)" will draw a dashed line in between the specified positions.
