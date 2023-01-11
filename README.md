@@ -51,3 +51,5 @@ Saying "(position specifier) vector (position specifier)" will draw an arrow fro
 Saying "(position specifier) vector (position specifier) with (number)" will draw an arrow from the first specified position to the second labeled in the middle with the number.
 
 Saying "(position specifier) dash stripe (position specifier)" will draw a dashed line in between the specified positions.
+
+Saying "cross out (position specifier)" draws an x at the specified position. The word out is optional.
