@@ -53,3 +53,16 @@ Saying "(position specifier) vector (position specifier) with (number)" will dra
 Saying "(position specifier) dash stripe (position specifier)" will draw a dashed line in between the specified positions.
 
 Saying "cross out (position specifier)" draws an x at the specified position. The word out is optional.
+
+# Text
+Saying "text" creates a text field at the cursor's location.
+
+Saying "char (phonetic alphabet word for a letter)" creates a text field at the cursor with the specified letter in upper case.
+
+Saying "label (position specifier)" creates a text field at the specified position.
+
+Saying "change (position specifier)" edits the text field at the specified location and selects all its text.
+
+Saying "fresh (position specifier)" edits the text field at the specified location and moves the text cursor to the end of the text field's first line.
+
+Saying "(position specifier) (value or val) (number)" creates a text field with the specified number as its text at the specified position.
