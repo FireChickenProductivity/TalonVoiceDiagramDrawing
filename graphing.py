@@ -1,10 +1,12 @@
-from talon import Module, actions, Context
+from talon import Module, actions, Context, app
 from .fire_chicken.mouse_position import MousePosition
 from .fire_chicken.data_storage import JSONFile, Storage
 import math
 from .text_fields import give_active_text_field_text
 
 module = Module()
+module.tag('diagram_drawing_graphing', desc = 'Activate diagram drawing graphing commands')
+graphing_context = Context()
 circle_drawing_delay = module.setting(
     'diagram_drawing_circle_drawing_delay',
     type = float,
@@ -267,24 +269,6 @@ def position_multiplied_by(position: MousePosition, factor):
 def compute_integer_position(position: MousePosition) -> MousePosition:
     return MousePosition(int(position.get_horizontal()), int(position.get_vertical()))
 
-storage: Storage = actions.user.diagram_drawing_compute_data_storage()
-graph_file: JSONFile = storage.get_json_file('Graph.json', from_json = Graph.from_json)
-
-current_graph = graph_file.get()
-graphing_context = Context()
-module.tag('diagram_drawing_graphing', desc = 'Activate diagram drawing graphing commands')
-
-def activate_graphing_tag():
-    global graphing_context
-    graphing_context.tags = ['user.diagram_drawing_graphing']
-
-def activate_graphing_tag_if_graph_defined():
-    global current_graph
-    if current_graph is not None:
-        activate_graphing_tag()
-activate_graphing_tag_if_graph_defined()
-
-current_axis = 1
 @module.action_class
 class Actions:
     def diagram_drawing_draw_dot():
@@ -376,6 +360,21 @@ def make_new_graph(dimensions: int = 2):
     activate_graphing_tag()
     update_graph_file()
 
+def activate_graphing_tag():
+    global graphing_context
+    graphing_context.tags = ['user.diagram_drawing_graphing']
+
 def update_graph_file():
     global graph_file, current_graph
     graph_file.set(current_graph)
+
+def set_up_graphing_system():
+    global storage, graph_file, current_graph, graphing_context, current_axis
+    storage = actions.user.diagram_drawing_compute_data_storage()
+    graph_file = storage.get_json_file('Graph.json', from_json = Graph.from_json)
+    current_graph = graph_file.get()
+    if current_graph is not None:
+        activate_graphing_tag()
+    current_axis = 1
+
+app.register('ready', set_up_graphing_system)
