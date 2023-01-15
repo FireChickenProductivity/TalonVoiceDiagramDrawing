@@ -1,5 +1,4 @@
 tag: user.diagram_drawing
-and tag: user.diagram_drawing_graphing
 -
 graphing finish: user.diagram_drawing_finish_graph()
 
