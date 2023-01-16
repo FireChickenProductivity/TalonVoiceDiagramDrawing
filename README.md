@@ -11,7 +11,7 @@ The canvas is remembered on a per application basis, so you do not have to respe
 The canvas specifying commands can be found in canvas.talon.
 
 # Position Specifiers
-Position specifiers are ways to specify positions to commands. Some commands will number positions. Those positions can be specified by number. Locations on the alpha grid (see below) are specified with the phonetic alphabet words corresponding to the letters in horizontal, vertical order. Positions on the current graph are specified by how many tick marks to move along each axis each separated by the word by (for example: minus five by ten means five tick marks to the left and ten tick marks up on a standard two dimensional graph).
+Position specifiers are ways to specify positions to commands. Some commands will number positions. Those positions can be specified by number. Locations on the alpha grid (see below) are specified with the phonetic alphabet words corresponding to the letters in vertical, horizontal order. Positions on the current graph are specified by how many tick marks to move along each axis each separated by the word by (for example: minus five by ten means five tick marks to the left and ten tick marks up on a standard two dimensional graph).
 
  Saying "move" followed by a position specifier moves the cursor to the specified position.
  
