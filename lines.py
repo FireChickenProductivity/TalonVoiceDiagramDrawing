@@ -66,6 +66,17 @@ class Actions:
         actions.user.diagram_drawing_draw_line_between_named_positions(origin_position_specifier, destination_position_specifier)
         label_average_named_position_with(origin_position_specifier, destination_position_specifier, label)
     
+    def draw_parallel_lines_around_named_positions_with_gap(origin_position_specifier: PositionSpecifier, destination_position_specifier: PositionSpecifier, gap: int):
+        ''''''
+        origin: MousePosition = actions.user.diagram_drawing_get_position_from_specifier(origin_position_specifier)
+        destination: MousePosition = actions.user.diagram_drawing_get_position_from_specifier(destination_position_specifier)
+        direction_vector: MousePosition = destination - origin
+        direction_angle = atan2(direction_vector.get_vertical(), direction_vector.get_horizontal())
+        first_line_offset = compute_difference_position_with_angle_and_length(direction_angle + pi/2, gap)
+        second_line_offset = compute_difference_position_with_angle_and_length(direction_angle - pi/2, gap)
+        for offset in [first_line_offset, second_line_offset]:
+            draw_and_store_line_between_points(origin + offset, destination + offset)
+
     def diagram_drawing_draw_vector(origin: MousePosition, destination: MousePosition):
         ''''''
         draw_and_store_line_between_points(origin, destination)
