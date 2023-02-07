@@ -81,6 +81,20 @@ class Actions:
         ''''''
         draw_arrow(angleInDegrees, length, MousePosition.current())
     
+    def diagram_drawing_draw_rectangle_around_cursor(horizontal_amount: int, vertical_amount: int):
+        ''''''
+        scaled_horizontal = horizontal_amount*line_drawing_unit.get()
+        scaled_vertical = vertical_amount*line_drawing_unit.get()
+        current_position = MousePosition.current()
+        upper_left: MousePosition = MousePosition(scaled_horizontal, -scaled_vertical) + current_position
+        upper_right: MousePosition = MousePosition(-scaled_horizontal, -scaled_vertical) + current_position
+        bottom_left: MousePosition = MousePosition(scaled_horizontal, scaled_vertical) + current_position
+        bottom_right: MousePosition = MousePosition(-scaled_horizontal, scaled_vertical) + current_position
+        draw_and_store_line_between_points(upper_left, upper_right)
+        draw_and_store_line_between_points(upper_right, bottom_right)
+        draw_and_store_line_between_points(bottom_right, bottom_left)
+        draw_and_store_line_between_points(bottom_left, upper_left)
+        current_position.go()
 
 
 
