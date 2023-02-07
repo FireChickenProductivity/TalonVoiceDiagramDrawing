@@ -83,20 +83,36 @@ class Actions:
     
     def diagram_drawing_draw_rectangle_around_cursor(horizontal_amount: int, vertical_amount: int):
         ''''''
-        scaled_horizontal = horizontal_amount*line_drawing_unit.get()
-        scaled_vertical = vertical_amount*line_drawing_unit.get()
-        current_position = MousePosition.current()
-        upper_left: MousePosition = MousePosition(scaled_horizontal, -scaled_vertical) + current_position
-        upper_right: MousePosition = MousePosition(-scaled_horizontal, -scaled_vertical) + current_position
-        bottom_left: MousePosition = MousePosition(scaled_horizontal, scaled_vertical) + current_position
-        bottom_right: MousePosition = MousePosition(-scaled_horizontal, scaled_vertical) + current_position
-        draw_and_store_line_between_points(upper_left, upper_right)
-        draw_and_store_line_between_points(upper_right, bottom_right)
-        draw_and_store_line_between_points(bottom_right, bottom_left)
-        draw_and_store_line_between_points(bottom_left, upper_left)
+        current_position: MousePosition = MousePosition.current()
+        upper_left, upper_right, bottom_left, bottom_right = compute_rectangle_positions_around_position(horizontal_amount, vertical_amount, current_position)
+        draw_rectangle(upper_left, upper_right, bottom_left, bottom_right)
         current_position.go()
 
+    def diagram_drawing_draw_vertically_consecutive_rectangles(horizontal_amount: int, upper_vertical_amount: int, bottom_vertical_amount: int):
+        ''''''
+        current_position: MousePosition = MousePosition.current()
+        upper_left, upper_right, bottom_left, bottom_right = compute_rectangle_positions_around_position(horizontal_amount, upper_vertical_amount + bottom_vertical_amount, current_position)
+        draw_rectangle(upper_left, upper_right, bottom_left, bottom_right)
+        scaled_upper_vertical_amount = upper_vertical_amount*line_drawing_unit.get()
+        upper_bottom_left = upper_left + MousePosition(0, scaled_upper_vertical_amount)
+        upper_bottom_right = upper_right + MousePosition(0, scaled_upper_vertical_amount)
+        draw_and_store_line_between_points(upper_bottom_left, upper_bottom_right)
 
+
+def compute_rectangle_positions_around_position(horizontal_amount: int, vertical_amount: int, position: MousePosition):
+    scaled_horizontal = horizontal_amount*line_drawing_unit.get()
+    scaled_vertical = vertical_amount*line_drawing_unit.get()
+    upper_left: MousePosition = MousePosition(-scaled_horizontal, -scaled_vertical) + position
+    upper_right: MousePosition = MousePosition(scaled_horizontal, -scaled_vertical) + position
+    bottom_left: MousePosition = MousePosition(-scaled_horizontal, scaled_vertical) + position
+    bottom_right: MousePosition = MousePosition(scaled_horizontal, scaled_vertical) + position
+    return upper_left, upper_right, bottom_left, bottom_right
+
+def draw_rectangle(upper_left, upper_right, bottom_left, bottom_right):
+    draw_and_store_line_between_points(upper_left, upper_right)
+    draw_and_store_line_between_points(upper_right, bottom_right)
+    draw_and_store_line_between_points(bottom_right, bottom_left)
+    draw_and_store_line_between_points(bottom_left, upper_left)
 
 def draw_and_store_line_between_points(origin: MousePosition, destination: MousePosition):
     actions.user.diagram_drawing_draw_line(origin, destination)
