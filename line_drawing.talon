@@ -6,6 +6,12 @@ line <user.diagram_drawing_direction> <number_small>:
 line <number_small> <user.diagram_drawing_complex_direction> <number_small>:
     user.diagram_drawing_draw_line_from_cursor_using_complex_direction_and_amounts(diagram_drawing_complex_direction, number_small_1, number_small_2)
 
+dash [line] <user.diagram_drawing_direction> <number_small>:
+    user.diagram_drawing_draw_dashed_line_from_cursor_using_direction_and_amount(diagram_drawing_direction, number_small)
+
+dash [line] <number_small> <user.diagram_drawing_complex_direction> <number_small>:
+    user.diagram_drawing_draw_dashed_line_from_cursor_using_complex_direction_and_amounts(diagram_drawing_complex_direction, number_small_1, number_small_2)
+
 <user.diagram_drawing_position_specifier> stripe <user.diagram_drawing_position_specifier>:
     user.diagram_drawing_draw_line_between_named_positions(diagram_drawing_position_specifier_1, diagram_drawing_position_specifier_2)
 
