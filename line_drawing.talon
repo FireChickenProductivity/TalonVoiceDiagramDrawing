@@ -28,3 +28,5 @@ arrow [new] <number>: user.diagram_drawing_draw_arrowhead_at_cursor(number)
 lines <number_small> by <number_small>: user.diagram_drawing_draw_rectangle_around_cursor(number_small_1, number_small_2)
 lines <number_small> by <number_small> by <number_small>: user.diagram_drawing_draw_vertically_consecutive_rectangles(number_small_1, number_small_2, number_small_3)
 diamond <number_small> by <number_small>: user.diagram_drawing_draw_diamond_around_cursor(number_small_1, number_small_2)
+(dub|double) diamond <number_small> by <number_small>:
+    user.diagram_drawing_draw_double_diamond_around_cursor(number_small_1, number_small_2)
