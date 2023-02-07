@@ -98,7 +98,7 @@ class Actions:
         upper_bottom_right = upper_right + MousePosition(0, scaled_upper_vertical_amount)
         draw_and_store_line_between_points(upper_bottom_left, upper_bottom_right)
 
-    def diagram_drawing_draw_diamond_around_cursor(horizontal_amount: int, vertical_amount: int):
+    def diagram_drawing_draw_diamond_around_cursor(horizontal_amount: float, vertical_amount: float):
         ''''''
         scaled_horizontal = horizontal_amount*line_drawing_unit.get()
         scaled_vertical = vertical_amount*line_drawing_unit.get()
@@ -112,6 +112,11 @@ class Actions:
         draw_and_store_line_between_points(right, bottom)
         draw_and_store_line_between_points(bottom, left)
         current_position.go()
+    
+    def diagram_drawing_draw_double_diamond_around_cursor(horizontal_amount: int, vertical_amount: int):
+        ''''''
+        actions.user.diagram_drawing_draw_diamond_around_cursor(horizontal_amount, vertical_amount)
+        actions.user.diagram_drawing_draw_diamond_around_cursor(horizontal_amount + 0.5, vertical_amount + 0.5*vertical_amount/horizontal_amount)
 
 def compute_rectangle_positions_around_position(horizontal_amount: int, vertical_amount: int, position: MousePosition):
     scaled_horizontal = horizontal_amount*line_drawing_unit.get()
