@@ -2,8 +2,9 @@ import math
 from talon import actions, Module
 from .fire_chicken.mouse_position import MousePosition
 from .directions import Direction
-from .position_storage import store_line_in_main_storage, main_position_storage
+from .position_storage import store_line_in_main_storage
 from .position_captures import PositionSpecifier
+from .curves import compute_line_points, draw_curve_dashed
 from math import atan2, pi, cos, sin
 
 module = Module()
@@ -25,23 +26,33 @@ class Actions:
     def diagram_drawing_draw_line_from_cursor(horizontal: int, vertical: int):
         ''''''
         current_position: MousePosition = MousePosition.current()
-        unit_length: int = line_drawing_unit.get()
-        position_difference: MousePosition = MousePosition(unit_length*horizontal, -unit_length*vertical)
-        destination: MousePosition = current_position + position_difference
+        destination: MousePosition = current_position + compute_scaled_position_difference(horizontal, -vertical)
         actions.user.diagram_drawing_draw_line(current_position, destination)
         store_line_in_main_storage(current_position, destination)
-
+    
+    def diagram_drawing_draw_dashed_line_from_cursor(horizontal: int, vertical: int):
+        ''''''
+        current_position: MousePosition = MousePosition.current()  
+        destination: MousePosition = current_position + compute_scaled_position_difference(horizontal, -vertical)
+        line_points = compute_line_points(current_position, destination)
+        draw_curve_dashed(line_points)
+        store_line_in_main_storage(current_position, destination)
+    
     def diagram_drawing_draw_line_from_cursor_using_direction_and_amount(direction: Direction, amount: int):
         ''''''
-        horizontal: int = direction.horizontal*amount
-        vertical: int = direction.vertical*amount
-        actions.user.diagram_drawing_draw_line_from_cursor(horizontal, vertical)
+        draw_line_with_direction_and_amount(direction, amount, line_drawing_from_cursor_function = actions.user.diagram_drawing_draw_line_from_cursor)
     
+    def diagram_drawing_draw_dashed_line_from_cursor_using_direction_and_amount(direction: Direction, amount: int):
+        ''''''
+        draw_line_with_direction_and_amount(direction, amount, line_drawing_from_cursor_function = actions.user.diagram_drawing_draw_dashed_line_from_cursor)
+
     def diagram_drawing_draw_line_from_cursor_using_complex_direction_and_amounts(direction: Direction, horizontal: int, vertical: int):
         ''''''
-        direction_adjusted_horizontal: int = direction.horizontal*horizontal
-        direction_adjusted_vertical: int = direction.vertical*vertical
-        actions.user.diagram_drawing_draw_line_from_cursor(direction_adjusted_horizontal, direction_adjusted_vertical)
+        draw_line_from_cursor_using_complex_direction_and_amounts(direction, horizontal, vertical, actions.user.diagram_drawing_draw_line_from_cursor)
+    
+    def diagram_drawing_draw_dashed_line_from_cursor_using_complex_direction_and_amounts(direction: Direction, horizontal: int, vertical: int):
+        ''''''
+        draw_line_from_cursor_using_complex_direction_and_amounts(direction, horizontal, vertical, actions.user.diagram_drawing_draw_dashed_line_from_cursor)
 
     def diagram_drawing_draw_line_between_named_positions(origin_position_specifier: PositionSpecifier, destination_position_specifier: PositionSpecifier):
         ''''''
@@ -117,6 +128,20 @@ class Actions:
         ''''''
         actions.user.diagram_drawing_draw_diamond_around_cursor(horizontal_amount, vertical_amount)
         actions.user.diagram_drawing_draw_diamond_around_cursor(horizontal_amount + 0.5, vertical_amount + 0.5*vertical_amount/horizontal_amount)
+
+def compute_scaled_position_difference(horizontal: int, vertical: int):
+    return MousePosition(horizontal, vertical)*line_drawing_unit.get()
+
+def draw_line_with_direction_and_amount(direction: Direction, amount: int, line_drawing_from_cursor_function):
+    horizontal: int = direction.horizontal*amount
+    vertical: int = direction.vertical*amount
+    line_drawing_from_cursor_function(horizontal, vertical)
+
+def draw_line_from_cursor_using_complex_direction_and_amounts(direction: Direction, horizontal: int, vertical: int, line_drawing_from_cursor_function):
+        ''''''
+        direction_adjusted_horizontal: int = direction.horizontal*horizontal
+        direction_adjusted_vertical: int = direction.vertical*vertical
+        line_drawing_from_cursor_function(direction_adjusted_horizontal, direction_adjusted_vertical)
 
 def compute_rectangle_positions_around_position(horizontal_amount: int, vertical_amount: int, position: MousePosition):
     scaled_horizontal = horizontal_amount*line_drawing_unit.get()
