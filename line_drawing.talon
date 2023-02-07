@@ -24,3 +24,5 @@ arrow [new] <number>: user.diagram_drawing_draw_arrowhead_at_cursor(number)
 
 <user.diagram_drawing_position_specifier> dash stripe <user.diagram_drawing_position_specifier>:
     user.diagram_drawing_draw_dashed_line_between_named_positions(diagram_drawing_position_specifier_1, diagram_drawing_position_specifier_2)
+
+lines <number_small> by <number_small>: user.diagram_drawing_draw_rectangle_around_cursor(number_small_1, number_small_2)
