@@ -19,11 +19,8 @@ def diagram_drawing_positive_number(m) -> str:
 @module.capture(rule = '[dash|minus|negative] <user.diagram_drawing_positive_number>')
 def diagram_drawing_number(m) -> str:
     ''''''
-    result: str = m[0]
-    if len(m) == 2:
-        result = '-' + m[1]
-    return result
-
+    return compute_signed_number_string_for_capture(m)
+    
 @module.capture(rule = '<user.diagram_drawing_number>')
 def diagram_drawing_number_float(m) -> float:
     ''''''
@@ -47,13 +44,16 @@ def diagram_drawing_small_positive_number(m)-> str:
 @module.capture(rule = '[dash|minus|negative] <user.diagram_drawing_small_positive_number>')
 def diagram_drawing_small_number(m) -> str:
     ''''''
-    result: str = m[0]
-    if len(m) == 2:
-        result = '-' + m[1]
-    return result
+    return compute_signed_number_string_for_capture(m)
 
 @module.capture(rule = '<user.diagram_drawing_small_number>')
 def diagram_drawing_small_float(m) -> float:
     ''''''
     result: float = float(m.diagram_drawing_small_number)
+    return result
+
+def compute_signed_number_string_for_capture(m):
+    result: str = m[0]
+    if len(m) == 2:
+        result = '-' + m[1]
     return result
