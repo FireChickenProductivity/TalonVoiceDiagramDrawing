@@ -4,7 +4,7 @@ from .fire_chicken.mouse_position import MousePosition
 PositionSpecifier = Union[int, List, str]
 
 module = Module()
-@module.capture(rule = '<number>|<user.diagram_drawing_number_float> by <user.diagram_drawing_number_float> [by <user.diagram_drawing_number_float>]|<user.letter> <user.letter>')
+@module.capture(rule = '<number>|<user.diagram_drawing_small_float> by <user.diagram_drawing_small_float> [by <user.diagram_drawing_small_float>]|<user.letter> <user.letter>')
 def diagram_drawing_position_specifier(m) -> PositionSpecifier:
     ''''''
     try:
