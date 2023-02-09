@@ -103,6 +103,10 @@ class Actions:
         ''''''
         draw_arrow(angleInDegrees, length, MousePosition.current())
     
+    def diagram_drawing_draw_triangle_arrowhead_at_cursor(angleInDegrees: float, length: int = 30):
+        ''''''
+        draw_triangle_arrowhead(angleInDegrees, length, MousePosition.current(), 190)
+    
     def diagram_drawing_draw_rectangle_around_cursor(horizontal_amount: int, vertical_amount: int):
         ''''''
         current_position: MousePosition = MousePosition.current()
@@ -188,12 +192,28 @@ def draw_arrow_half_after_line(origin: MousePosition, destination: MousePosition
 def draw_arrow(angleInDegrees: float, size: int, position: MousePosition, angle_difference: float = 225):
     angle_in_radians = math.radians(angleInDegrees)
     angle_difference_in_radians = math.radians(angle_difference)
-    arrow_length_distance: MousePosition = compute_difference_position_with_angle_and_length(angle_in_radians, size)
-    arrow_tip_position: MousePosition = position + arrow_length_distance
-    arrow_halfs_angles = [angle_in_radians + angle_difference_in_radians, angle_in_radians - angle_difference_in_radians]
-    for arrow_half_angle in arrow_halfs_angles:
+    arrow_tip_position: MousePosition = compute_arrow_tip_position(angle_in_radians, size, position)
+    for arrow_half_angle in compute_arrow_half_angles(angle_in_radians, angle_difference_in_radians):
         draw_arrow_half(arrow_half_angle, size, arrow_tip_position)
-    
+
+def draw_triangle_arrowhead(angleInDegrees: float, size: int, position: MousePosition, angle_difference: float = 225):
+    angle_in_radians = math.radians(angleInDegrees)
+    angle_difference_in_radians = math.radians(angle_difference)
+    arrow_tip_position: MousePosition = compute_arrow_tip_position(angle_in_radians, size, position)
+    arrow_half_angles = compute_arrow_half_angles(angle_in_radians, angle_difference_in_radians)
+    first_arrow_half_ending = compute_arrow_half_ending(arrow_half_angles[0], size, arrow_tip_position)
+    second_arrow_half_ending = compute_arrow_half_ending(arrow_half_angles[1], size, arrow_tip_position)
+    draw_consecutive_lines([arrow_tip_position, first_arrow_half_ending, second_arrow_half_ending])
+
+
+def compute_arrow_tip_position(angle: float, size: int, starting_position: MousePosition):
+    arrow_length_difference: MousePosition = compute_difference_position_with_angle_and_length(angle, size)
+    arrow_tip_position: MousePosition = starting_position + arrow_length_difference
+    return arrow_tip_position
+
+def compute_arrow_half_angles(arrow_angle: float, angle_difference: float):
+    return [arrow_angle + angle_difference, arrow_angle - angle_difference]
+
 def draw_arrow_half(angle: float, size: int, arrow_tip: MousePosition):
     ending: MousePosition = compute_arrow_half_ending(angle, size, arrow_tip)
     actions.user.diagram_drawing_draw_line(arrow_tip, ending)
@@ -234,3 +254,12 @@ def label_average_named_position_with(origin_position_specifier: PositionSpecifi
     actions.user.diagram_drawing_create_text_field()
     actions.insert(label)
     actions.user.diagram_drawing_unselect()
+
+def draw_consecutive_lines(positions, *, store_positions = True):
+    starting_position = positions[-1]
+    for position in positions:
+        ending_position = position
+        actions.user.diagram_drawing_draw_line(starting_position, ending_position)
+        if store_positions:
+            store_line_in_main_storage(starting_position, ending_position)
+        starting_position = ending_position
