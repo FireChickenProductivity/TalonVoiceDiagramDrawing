@@ -185,11 +185,12 @@ def draw_arrow_half_after_line(origin: MousePosition, destination: MousePosition
     arrow_difference = compute_difference_position_with_angle_and_length(arrow_part_angle, arrow_part_length)
     actions.user.diagram_drawing_draw_line(destination, destination + arrow_difference)
 
-def draw_arrow(angleInDegrees: float, size: int, position: MousePosition):
-    angleInRadians = angleInDegrees*pi/180
-    arrow_length_distance: MousePosition = compute_difference_position_with_angle_and_length(angleInRadians, size)
+def draw_arrow(angleInDegrees: float, size: int, position: MousePosition, angle_difference: float = 225):
+    angle_in_radians = math.radians(angleInDegrees)
+    angle_difference_in_radians = math.radians(angle_difference)
+    arrow_length_distance: MousePosition = compute_difference_position_with_angle_and_length(angle_in_radians, size)
     arrow_tip_position: MousePosition = position + arrow_length_distance
-    arrow_halfs_angles = [angleInRadians + 5*pi/4, angleInRadians - 5*pi/4]
+    arrow_halfs_angles = [angle_in_radians + angle_difference_in_radians, angle_in_radians - angle_difference_in_radians]
     for arrow_half_angle in arrow_halfs_angles:
         draw_arrow_half(arrow_half_angle, size, arrow_tip_position)
     
