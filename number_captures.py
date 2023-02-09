@@ -29,3 +29,17 @@ def diagram_drawing_number_float(m) -> float:
     ''''''
     result: float = float(m.diagram_drawing_number)
     return result
+
+@module.capture(rule = '<number_small> (point|dot) <number_small>')
+def diagram_drawing_small_decimal_number(m) -> str:
+    number: str = str(m[0]) + '.' + str(m[2])
+    return number
+
+@module.capture(rule = '<number_small>|<user.diagram_drawing_small_decimal_number>')
+def diagram_drawing_small_float(m)-> float:
+    ''''''
+    try:
+        return float(m.diagram_drawing_small_decimal_number)
+    except:
+        pass
+    return float(m.number_small)
