@@ -36,10 +36,24 @@ def diagram_drawing_small_decimal_number(m) -> str:
     return number
 
 @module.capture(rule = '<number_small>|<user.diagram_drawing_small_decimal_number>')
-def diagram_drawing_small_float(m)-> float:
+def diagram_drawing_small_positive_number(m)-> str:
     ''''''
     try:
-        return float(m.diagram_drawing_small_decimal_number)
+        return m.diagram_drawing_small_decimal_number
     except:
         pass
-    return float(m.number_small)
+    return str(m.number_small)
+
+@module.capture(rule = '[dash|minus|negative] <user.diagram_drawing_small_positive_number>')
+def diagram_drawing_small_number(m) -> str:
+    ''''''
+    result: str = m[0]
+    if len(m) == 2:
+        result = '-' + m[1]
+    return result
+
+@module.capture(rule = '<user.diagram_drawing_small_number>')
+def diagram_drawing_small_float(m) -> float:
+    ''''''
+    result: float = float(m.diagram_drawing_small_number)
+    return result
