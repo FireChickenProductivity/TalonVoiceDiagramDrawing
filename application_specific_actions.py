@@ -1,5 +1,5 @@
 from talon import Module
-from ..fire_chicken.mouse_position import MousePosition
+from .fire_chicken.mouse_position import MousePosition
 module = Module()
 
 @module.action_class
