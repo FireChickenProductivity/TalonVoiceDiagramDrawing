@@ -3,6 +3,8 @@ Work in progress diagram drawing talon commands currently compatible with Vectr.
 
 Proper documentation is in progress.
 
+Note that this command set is very large and can take a while to load on some computers when you first open Vectr and when you first open the "are you sure" menu. Attempts will be made to reduce the command set size without meaningfully reducing functionality. The current command set size may prevent these commands from working with dragon.
+
 # Canvas
 For some functionality to work, you must use commands to specify the upper left and bottom right corners of the canvas you will be drawing on. You specify the upper left corner by moving the mouse to it and saying "update canvas origin". You specify the bottom right corner by moving the mouse to it and saying "update canvas ending".
 
