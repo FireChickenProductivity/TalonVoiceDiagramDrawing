@@ -195,9 +195,13 @@ def draw_arrow(angleInDegrees: float, size: int, position: MousePosition, angle_
         draw_arrow_half(arrow_half_angle, size, arrow_tip_position)
     
 def draw_arrow_half(angle: float, size: int, arrow_tip: MousePosition):
+    ending: MousePosition = compute_arrow_half_ending(angle, size, arrow_tip)
+    actions.user.diagram_drawing_draw_line(arrow_tip, ending)
+
+def compute_arrow_half_ending(angle: float, size: int, arrow_tip: MousePosition):
     arrow_difference = compute_difference_position_with_angle_and_length(angle, size)
     ending: MousePosition = arrow_tip + arrow_difference
-    actions.user.diagram_drawing_draw_line(arrow_tip, ending)
+    return ending
 
 def compute_difference_position_with_angle_and_length(angle: float, length: int):
     horizontal = int(cos(angle)*length)
