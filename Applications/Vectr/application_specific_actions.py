@@ -29,6 +29,8 @@ class Actions:
         for position in positions:
             position.go()
             left_click()
+        positions[0].go()
+        left_click()
         fill_in_current_continuous_line_shape()
             
 
