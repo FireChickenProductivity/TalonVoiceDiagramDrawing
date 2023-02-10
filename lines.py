@@ -4,7 +4,7 @@ from .fire_chicken.mouse_position import MousePosition
 from .directions import Direction
 from .position_storage import store_line_in_main_storage
 from .position_captures import PositionSpecifier
-from .curves import compute_line_points, draw_curve_dashed
+from .curves import compute_line_points, draw_curve_dashed, draw_points
 from math import atan2, pi, cos, sin
 
 module = Module()
@@ -107,6 +107,10 @@ class Actions:
         ''''''
         draw_triangle_arrowhead(angleInDegrees, length, MousePosition.current(), 190)
     
+    def diagram_drawing_draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees: float, length: int = 15, tail_length: int = 3):
+        ''''''
+        draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees, length, tail_length, MousePosition.current(), 190)
+    
     def diagram_drawing_draw_rectangle_around_cursor(horizontal_amount: int, vertical_amount: int):
         ''''''
         current_position: MousePosition = MousePosition.current()
@@ -189,15 +193,15 @@ def draw_arrow_half_after_line(origin: MousePosition, destination: MousePosition
     arrow_difference = compute_difference_position_with_angle_and_length(arrow_part_angle, arrow_part_length)
     actions.user.diagram_drawing_draw_line(destination, destination + arrow_difference)
 
-def draw_arrow(angleInDegrees: float, size: int, position: MousePosition, angle_difference: float = 225):
-    angle_in_radians = math.radians(angleInDegrees)
+def draw_arrow(angle_in_degrees: float, size: int, position: MousePosition, angle_difference: float = 225):
+    angle_in_radians = math.radians(angle_in_degrees)
     angle_difference_in_radians = math.radians(angle_difference)
     arrow_tip_position: MousePosition = compute_arrow_tip_position(angle_in_radians, size, position)
     for arrow_half_angle in compute_arrow_half_angles(angle_in_radians, angle_difference_in_radians):
         draw_arrow_half(arrow_half_angle, size, arrow_tip_position)
 
-def draw_triangle_arrowhead(angleInDegrees: float, size: int, position: MousePosition, angle_difference: float = 225):
-    angle_in_radians = math.radians(angleInDegrees)
+def draw_triangle_arrowhead(angle_in_degrees: float, size: int, position: MousePosition, angle_difference: float = 225):
+    angle_in_radians = math.radians(angle_in_degrees)
     angle_difference_in_radians = math.radians(angle_difference)
     arrow_tip_position: MousePosition = compute_arrow_tip_position(angle_in_radians, size, position)
     arrow_half_angles = compute_arrow_half_angles(angle_in_radians, angle_difference_in_radians)
@@ -205,6 +209,36 @@ def draw_triangle_arrowhead(angleInDegrees: float, size: int, position: MousePos
     second_arrow_half_ending = compute_arrow_half_ending(arrow_half_angles[1], size, arrow_tip_position)
     draw_consecutive_lines([arrow_tip_position, first_arrow_half_ending, second_arrow_half_ending])
 
+def draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees: float, arrowhead_size: int, tail_size: int, position: MousePosition, angle_difference: float):
+    angle_in_radians = math.radians(angle_in_degrees)
+    angle_difference_in_radians = math.radians(angle_difference)
+    arrow_tip_position: MousePosition = compute_arrow_tip_position(angle_in_radians, arrowhead_size, position)
+    arrow_half_angles = compute_arrow_half_angles(angle_in_radians, angle_difference_in_radians)
+    arrow_half_size = arrowhead_size + tail_size
+    arrow_half_angles = compute_arrow_half_angles(angle_in_radians, angle_difference_in_radians)
+    for angle in arrow_half_angles:
+        draw_arrow_half(angle, arrow_half_size, arrow_tip_position)
+    first_arrowhead_ending = compute_arrow_half_ending(arrow_half_angles[0], arrowhead_size, arrow_tip_position)
+    second_arrowhead_ending = compute_arrow_half_ending(arrow_half_angles[1], arrowhead_size, arrow_tip_position)
+    actions.user.diagram_drawing_draw_line(first_arrowhead_ending, second_arrowhead_ending)
+    fill_in_isosceles_triangle(arrow_tip_position, first_arrowhead_ending, second_arrowhead_ending)
+
+def fill_in_isosceles_triangle(tip: MousePosition, base_1: MousePosition, base_2: MousePosition):
+    distance = (base_1 - tip).compute_magnitude()
+    angle_1 = compute_angle_between_positions(tip, base_1)
+    angle_2 = compute_angle_between_positions(tip, base_2)
+    for intermediary_distance in range(math.ceil(distance)):
+        line_start = compute_difference_position_with_angle_and_length(angle_1, intermediary_distance) + tip
+        line_ending = compute_difference_position_with_angle_and_length(angle_2, intermediary_distance) + tip
+        line_points = compute_line_points(line_start, line_ending)
+        draw_points(line_points)
+        actions.sleep(0.2)
+
+    
+def compute_angle_between_positions(start: MousePosition, destination: MousePosition):
+    change = destination - start
+    angle = math.atan2(change.get_vertical(), change.get_horizontal())
+    return angle
 
 def compute_arrow_tip_position(angle: float, size: int, starting_position: MousePosition):
     arrow_length_difference: MousePosition = compute_difference_position_with_angle_and_length(angle, size)
