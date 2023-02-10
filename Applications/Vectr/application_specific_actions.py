@@ -1,5 +1,7 @@
 from talon import Context, actions, Module, ctrl
 from ...fire_chicken.mouse_position import MousePosition
+from typing import List
+from .application_specific_utilities import fill_in_current_continuous_line_shape
 
 module = Module()
 module.tag('vectr', desc = 'Activates drawing commands for vectr')
@@ -20,6 +22,16 @@ class Actions:
         left_click()
         actions.user.diagram_drawing_unselect()
     
+    def diagram_drawing_draw_filled_in_line_shape(positions: List):
+        ''''''
+        actions.user.diagram_drawing_unselect()
+        activate_line_drawing_tool()
+        for position in positions:
+            position.go()
+            left_click()
+        fill_in_current_continuous_line_shape()
+            
+
     def diagram_drawing_create_text_field():
         ''''''
         actions.user.diagram_drawing_unselect()
