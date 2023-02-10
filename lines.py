@@ -107,7 +107,7 @@ class Actions:
         ''''''
         draw_triangle_arrowhead(angleInDegrees, length, MousePosition.current(), 190)
     
-    def diagram_drawing_draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees: float, length: int = 15, tail_length: int = 3):
+    def diagram_drawing_draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees: float, length: int = 30, tail_length: int = 6):
         ''''''
         draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees, length, tail_length, MousePosition.current(), 190)
     
@@ -210,6 +210,7 @@ def draw_triangle_arrowhead(angle_in_degrees: float, size: int, position: MouseP
     draw_consecutive_lines([arrow_tip_position, first_arrow_half_ending, second_arrow_half_ending])
 
 def draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees: float, arrowhead_size: int, tail_size: int, position: MousePosition, angle_difference: float):
+    original_position = MousePosition.current()
     angle_in_radians = math.radians(angle_in_degrees)
     angle_difference_in_radians = math.radians(angle_difference)
     arrow_tip_position: MousePosition = compute_arrow_tip_position(angle_in_radians, arrowhead_size, position)
@@ -220,20 +221,8 @@ def draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees: float, arrowhe
         draw_arrow_half(angle, arrow_half_size, arrow_tip_position)
     first_arrowhead_ending = compute_arrow_half_ending(arrow_half_angles[0], arrowhead_size, arrow_tip_position)
     second_arrowhead_ending = compute_arrow_half_ending(arrow_half_angles[1], arrowhead_size, arrow_tip_position)
-    actions.user.diagram_drawing_draw_line(first_arrowhead_ending, second_arrowhead_ending)
-    fill_in_isosceles_triangle(arrow_tip_position, first_arrowhead_ending, second_arrowhead_ending)
-
-def fill_in_isosceles_triangle(tip: MousePosition, base_1: MousePosition, base_2: MousePosition):
-    distance = (base_1 - tip).compute_magnitude()
-    angle_1 = compute_angle_between_positions(tip, base_1)
-    angle_2 = compute_angle_between_positions(tip, base_2)
-    for intermediary_distance in range(math.ceil(distance)):
-        line_start = compute_difference_position_with_angle_and_length(angle_1, intermediary_distance) + tip
-        line_ending = compute_difference_position_with_angle_and_length(angle_2, intermediary_distance) + tip
-        line_points = compute_line_points(line_start, line_ending)
-        draw_points(line_points)
-        actions.sleep(0.2)
-
+    actions.user.diagram_drawing_draw_filled_in_line_shape([arrow_tip_position, first_arrowhead_ending, second_arrowhead_ending])
+    original_position.go()
     
 def compute_angle_between_positions(start: MousePosition, destination: MousePosition):
     change = destination - start
