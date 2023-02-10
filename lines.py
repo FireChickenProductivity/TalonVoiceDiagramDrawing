@@ -107,7 +107,7 @@ class Actions:
         ''''''
         draw_triangle_arrowhead(angleInDegrees, length, MousePosition.current(), 190)
     
-    def diagram_drawing_draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees: float, length: int = 30, tail_length: int = 6):
+    def diagram_drawing_draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees: float, length: int = 20, tail_length: int = 6):
         ''''''
         draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees, length, tail_length, MousePosition.current(), 190)
     
@@ -216,12 +216,9 @@ def draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees: float, arrowhe
     arrow_tip_position: MousePosition = compute_arrow_tip_position(angle_in_radians, arrowhead_size, position)
     arrow_half_angles = compute_arrow_half_angles(angle_in_radians, angle_difference_in_radians)
     arrow_half_size = arrowhead_size + tail_size
-    arrow_half_angles = compute_arrow_half_angles(angle_in_radians, angle_difference_in_radians)
-    for angle in arrow_half_angles:
-        draw_arrow_half(angle, arrow_half_size, arrow_tip_position)
-    first_arrowhead_ending = compute_arrow_half_ending(arrow_half_angles[0], arrowhead_size, arrow_tip_position)
-    second_arrowhead_ending = compute_arrow_half_ending(arrow_half_angles[1], arrowhead_size, arrow_tip_position)
-    actions.user.diagram_drawing_draw_filled_in_line_shape([arrow_tip_position, first_arrowhead_ending, second_arrowhead_ending])
+    first_arrowhead_ending = compute_arrow_half_ending(arrow_half_angles[0], arrow_half_size, arrow_tip_position)
+    second_arrowhead_ending = compute_arrow_half_ending(arrow_half_angles[1], arrow_half_size, arrow_tip_position)
+    actions.user.diagram_drawing_draw_filled_in_line_shape([arrow_tip_position, first_arrowhead_ending, position, second_arrowhead_ending])
     original_position.go()
     
 def compute_angle_between_positions(start: MousePosition, destination: MousePosition):
