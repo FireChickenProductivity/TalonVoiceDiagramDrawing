@@ -3,6 +3,13 @@ import os
 from talon import actions, Module
 
 module = Module()
+vectr_color_interface_click_delay = module.setting(
+    'diagram_drawing_vectr_color_interface_click_delay',
+    type = int,
+    default = 500,
+    desc = 'How long to pause between clicking on aspects of the vectr color interface'
+)
+
 @module.action_class
 class Actions:
     def diagram_drawing_update_stored_vectr_position(name: str):
@@ -11,14 +18,21 @@ class Actions:
         file.set_to_current_mouse_position()
 
 def fill_in_current_continuous_line_shape():
+    wait_for_color_interface_to_process_clicking()
     click_storage_position('fill')
+    wait_for_color_interface_to_process_clicking()
     click_storage_position('fill_color')
+    wait_for_color_interface_to_process_clicking()
     click_storage_position('fill_color_black')
+    wait_for_color_interface_to_process_clicking()
     
+def wait_for_color_interface_to_process_clicking():
+    actions.sleep(f'{vectr_color_interface_click_delay.get()}ms')
 
 def click_storage_position(name: str):
     file = get_storage_position(name)
-    file.go()
+    position = file.get()
+    position.go()
     actions.mouse_click(0)
 
 def get_storage_position(name: str):
