@@ -32,7 +32,7 @@ class Actions:
         positions[0].go()
         left_click()
         fill_in_current_continuous_line_shape()
-            
+        actions.user.diagram_drawing_unselect()
 
     def diagram_drawing_create_text_field():
         ''''''
