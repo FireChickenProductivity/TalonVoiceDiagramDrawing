@@ -107,7 +107,7 @@ class Actions:
         ''''''
         draw_triangle_arrowhead(angleInDegrees, length, MousePosition.current(), 190)
     
-    def diagram_drawing_draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees: float, length: int = 20, tail_length: int = 6):
+    def diagram_drawing_draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees: float, length: int = 15, tail_length: int = 10):
         ''''''
         draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees, length, tail_length, MousePosition.current(), 190)
     
