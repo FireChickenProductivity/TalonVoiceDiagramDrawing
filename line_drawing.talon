@@ -36,6 +36,7 @@ pointer [new] <number>: user.diagram_drawing_draw_filled_in_triangle_arrowhead_w
 lines <number_small> by <number_small>: user.diagram_drawing_draw_rectangle_around_cursor(number_small_1, number_small_2)
 (dub|double) lines <number_small> by <number_small>: user.diagram_drawing_draw_double_rectangle_around_cursor(number_small_1, number_small_2)
 lines <number_small> by <number_small> by <number_small>: user.diagram_drawing_draw_vertically_consecutive_rectangles(number_small_1, number_small_2, number_small_3)
+(dub|double) lines <number_small> by <number_small> by <number_small>: user.diagram_drawing_draw_vertically_consecutive_rectangles_within_rectangle(number_small_1, number_small_2, number_small_3)
 diamond <number_small> by <number_small>: user.diagram_drawing_draw_diamond_around_cursor(number_small_1, number_small_2)
 (dub|double) diamond <number_small> by <number_small>:
     user.diagram_drawing_draw_double_diamond_around_cursor(number_small_1, number_small_2)
