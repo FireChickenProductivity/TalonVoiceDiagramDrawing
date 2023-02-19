@@ -28,11 +28,13 @@ cross [out] <user.diagram_drawing_position_specifier>: user.diagram_drawing_cros
 
 arrow [new] <number>: user.diagram_drawing_draw_arrowhead_at_cursor(number)
 arrowhead [new] <number>: user.diagram_drawing_draw_triangle_arrowhead_at_cursor(number)
+pointer [new] <number>: user.diagram_drawing_draw_filled_in_triangle_arrowhead_with_tail(number)
 
 <user.diagram_drawing_position_specifier> dash stripe <user.diagram_drawing_position_specifier>:
     user.diagram_drawing_draw_dashed_line_between_named_positions(diagram_drawing_position_specifier_1, diagram_drawing_position_specifier_2)
 
 lines <number_small> by <number_small>: user.diagram_drawing_draw_rectangle_around_cursor(number_small_1, number_small_2)
+(dub|double) lines <number_small> by <number_small>: user.diagram_drawing_draw_double_rectangle_around_cursor(number_small_1, number_small_2)
 lines <number_small> by <number_small> by <number_small>: user.diagram_drawing_draw_vertically_consecutive_rectangles(number_small_1, number_small_2, number_small_3)
 diamond <number_small> by <number_small>: user.diagram_drawing_draw_diamond_around_cursor(number_small_1, number_small_2)
 (dub|double) diamond <number_small> by <number_small>:
