@@ -141,6 +141,12 @@ class Actions:
         upper_bottom_right = upper_right + MousePosition(0, scaled_upper_vertical_amount)
         draw_and_store_line_between_points(upper_bottom_left, upper_bottom_right)
 
+    def diagram_drawing_draw_vertically_consecutive_rectangles_within_rectangle(horizontal_amount: int, upper_vertical_amount: int, bottom_vertical_amount: int):
+        ''''''
+        scaled_thickness = double_rectangle_thickness.get()/line_drawing_unit.get()
+        actions.user.diagram_drawing_draw_rectangle_around_cursor(horizontal_amount + scaled_thickness, upper_vertical_amount + bottom_vertical_amount + scaled_thickness)
+        actions.user.diagram_drawing_draw_vertically_consecutive_rectangles(horizontal_amount, upper_vertical_amount, bottom_vertical_amount)
+
     def diagram_drawing_draw_diamond_around_cursor(horizontal_amount: float, vertical_amount: float):
         ''''''
         scaled_horizontal = horizontal_amount*line_drawing_unit.get()
