@@ -6,6 +6,7 @@ from .position_storage import store_line_in_main_storage
 from .position_captures import PositionSpecifier
 from .curves import compute_line_points, draw_curve_dashed, draw_points
 from math import atan2, pi, cos, sin
+from typing import Union
 
 module = Module()
 line_drawing_unit = module.setting(
@@ -19,6 +20,12 @@ cross_out_size = module.setting(
     type = int,
     default = 80,
     desc = 'The size of the cross out lines'
+)
+double_rectangle_thickness = module.setting(
+    'diagram_drawing_double_rectangle_thickness',
+    type = int,
+    default = 6,
+    desc = 'The distance between double rectangles'
 )
 
 @module.action_class
@@ -111,12 +118,18 @@ class Actions:
         ''''''
         draw_filled_in_triangle_arrowhead_with_tail(angle_in_degrees, length, tail_length, MousePosition.current(), 190)
     
-    def diagram_drawing_draw_rectangle_around_cursor(horizontal_amount: int, vertical_amount: int):
+    def diagram_drawing_draw_rectangle_around_cursor(horizontal_amount: Union[int, float], vertical_amount: Union[int, float]):
         ''''''
         current_position: MousePosition = MousePosition.current()
         upper_left, upper_right, bottom_left, bottom_right = compute_rectangle_positions_around_position(horizontal_amount, vertical_amount, current_position)
         draw_rectangle(upper_left, upper_right, bottom_left, bottom_right)
         current_position.go()
+    
+    def diagram_drawing_draw_double_rectangle_around_cursor(horizontal_amount: int, vertical_amount: int):
+        ''''''
+        actions.user.diagram_drawing_draw_rectangle_around_cursor(horizontal_amount, vertical_amount)
+        scaled_thickness = double_rectangle_thickness.get()/line_drawing_unit.get()
+        actions.user.diagram_drawing_draw_rectangle_around_cursor(horizontal_amount + scaled_thickness, vertical_amount + scaled_thickness)
 
     def diagram_drawing_draw_vertically_consecutive_rectangles(horizontal_amount: int, upper_vertical_amount: int, bottom_vertical_amount: int):
         ''''''
