@@ -128,7 +128,7 @@ class Actions:
     def diagram_drawing_draw_double_rectangle_around_cursor(horizontal_amount: int, vertical_amount: int):
         ''''''
         actions.user.diagram_drawing_draw_rectangle_around_cursor(horizontal_amount, vertical_amount)
-        scaled_thickness = double_rectangle_thickness.get()/line_drawing_unit.get()
+        scaled_thickness = compute_double_rectangle_thickness_scaled_to_line_unit()
         actions.user.diagram_drawing_draw_rectangle_around_cursor(horizontal_amount + scaled_thickness, vertical_amount + scaled_thickness)
 
     def diagram_drawing_draw_vertically_consecutive_rectangles(horizontal_amount: int, upper_vertical_amount: int, bottom_vertical_amount: int):
@@ -143,7 +143,7 @@ class Actions:
 
     def diagram_drawing_draw_vertically_consecutive_rectangles_within_rectangle(horizontal_amount: int, upper_vertical_amount: int, bottom_vertical_amount: int):
         ''''''
-        scaled_thickness = double_rectangle_thickness.get()/line_drawing_unit.get()
+        scaled_thickness = compute_double_rectangle_thickness_scaled_to_line_unit()
         actions.user.diagram_drawing_draw_rectangle_around_cursor(horizontal_amount + scaled_thickness, upper_vertical_amount + bottom_vertical_amount + scaled_thickness)
         actions.user.diagram_drawing_draw_vertically_consecutive_rectangles(horizontal_amount, upper_vertical_amount, bottom_vertical_amount)
 
@@ -166,6 +166,9 @@ class Actions:
         ''''''
         actions.user.diagram_drawing_draw_diamond_around_cursor(horizontal_amount, vertical_amount)
         actions.user.diagram_drawing_draw_diamond_around_cursor(horizontal_amount + 0.5, vertical_amount + 0.5*vertical_amount/horizontal_amount)
+
+def compute_double_rectangle_thickness_scaled_to_line_unit():
+    return double_rectangle_thickness.get()/line_drawing_unit.get()
 
 def compute_scaled_position_difference(horizontal: int, vertical: int):
     return MousePosition(horizontal, vertical)*line_drawing_unit.get()
