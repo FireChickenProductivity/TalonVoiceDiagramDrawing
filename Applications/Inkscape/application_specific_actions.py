@@ -21,6 +21,21 @@ class Actions:
         left_click()
         actions.user.diagram_drawing_unselect()
 
+    def diagram_drawing_draw_filled_in_line_shape(positions: List):
+        ''''''
+        actions.user.diagram_drawing_unselect()
+        activate_straight_line_tool()
+        for position in positions:
+            position.go()
+            left_click()
+        positions[0].go()
+        left_click()
+        fill_position = actions.user.diagram_drawing_get_application_specific_data_storage_position('fill')
+        fill_position.go()
+        left_click()
+        actions.user.diagram_drawing_unselect()
+        positions[0].go()
+
     def diagram_drawing_create_text_field():
         ''''''
         actions.user.diagram_drawing_unselect()
@@ -56,9 +71,6 @@ class Actions:
 def left_click():
     actions.mouse_click(0)
 
-def right_click():
-    actions.mouse_click(1)
-
 def activate_pencil_tool():
     actions.key('p')
 
@@ -67,6 +79,9 @@ def activate_text_tool():
 
 def activate_selection_tool():
     actions.key('s')
+
+def activate_straight_line_tool():
+    actions.key('b')
 
 def hold_left_mouse_button_down():
     ctrl.mouse_click(button=0, down=True)
