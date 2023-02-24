@@ -28,15 +28,18 @@ class Actions:
     def diagram_drawing_create_text_field():
         ''''''
         actions.user.diagram_drawing_unselect()
-        actions.key('t')
+        activate_text_tool()
         left_click()
     
     def diagram_drawing_unselect():
         ''''''
         actions.key('escape')
+        activate_selection_tool()
     
     def diagram_drawing_edit_text_at_cursor():
         ''''''
+        actions.user.diagram_drawing_unselect()
+        activate_text_tool()
         left_click()
     
     def diagram_drawing_start_freestyle_drawing():
@@ -62,6 +65,12 @@ def right_click():
 
 def activate_pencil_tool():
     actions.key('p')
+
+def activate_text_tool():
+    actions.key('t')
+
+def activate_selection_tool():
+    actions.key('s')
 
 def hold_left_mouse_button_down():
     ctrl.mouse_click(button=0, down=True)
