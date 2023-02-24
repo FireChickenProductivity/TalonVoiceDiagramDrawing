@@ -20,10 +20,6 @@ class Actions:
         destination.go()
         left_click()
         actions.user.diagram_drawing_unselect()
-    
-    def diagram_drawing_draw_filled_in_line_shape(positions: List):
-        ''''''
-        pass
 
     def diagram_drawing_create_text_field():
         ''''''
