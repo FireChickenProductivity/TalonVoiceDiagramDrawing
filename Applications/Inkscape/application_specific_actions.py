@@ -13,7 +13,13 @@ tag: user.inkscape
 class Actions:
     def diagram_drawing_draw_line(origin: MousePosition, destination: MousePosition):
         ''''''
-        pass
+        actions.user.diagram_drawing_unselect()
+        origin.go()
+        activate_pencil_tool()
+        left_click()
+        destination.go()
+        left_click()
+        actions.user.diagram_drawing_unselect()
     
     def diagram_drawing_draw_filled_in_line_shape(positions: List):
         ''''''
@@ -21,7 +27,9 @@ class Actions:
 
     def diagram_drawing_create_text_field():
         ''''''
-        pass
+        actions.user.diagram_drawing_unselect()
+        actions.key('t')
+        left_click()
     
     def diagram_drawing_unselect():
         ''''''
@@ -45,9 +53,6 @@ class Actions:
     def diagram_drawing_get_drawing_application_name() -> str:
         ''''''
         return 'inkscape'
-
-def activate_line_drawing_tool():
-    actions.key('b')
 
 def left_click():
     actions.mouse_click(0)
