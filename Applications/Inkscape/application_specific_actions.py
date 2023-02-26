@@ -5,6 +5,13 @@ from typing import List
 module = Module()
 module.tag('inkscape', desc = 'Activates drawing commands for inkscape')
 
+inkscape_filled_in_shape_drawing_delay = module.setting(
+    'diagram_drawing_inkscape_filled_in_shape_drawing_delay',
+    type = int,
+    default = 100,
+    desc = 'How long to pause in milliseconds at various points of drawing a filled in shape in inkscape. Consider making this longer if drawing filled in shapes in inkscape is not working.'
+)
+
 context = Context()
 context.matches = r'''
 tag: user.inkscape
@@ -27,14 +34,16 @@ class Actions:
         activate_straight_line_tool()
         for position in positions:
             position.go()
+            wait_filled_in_shape_drawing_delay()
             left_click()
         positions[0].go()
+        wait_filled_in_shape_drawing_delay()
         left_click()
+        wait_filled_in_shape_drawing_delay()
         fill_position = actions.user.diagram_drawing_get_application_specific_data_storage_position('fill')
         fill_position.go()
         left_click()
         actions.user.diagram_drawing_unselect()
-        positions[0].go()
 
     def diagram_drawing_create_text_field():
         ''''''
@@ -88,3 +97,6 @@ def hold_left_mouse_button_down():
 
 def release_left_mouse_button():
     ctrl.mouse_click(button=0, up=True)
+
+def wait_filled_in_shape_drawing_delay():
+    actions.sleep(f'{inkscape_filled_in_shape_drawing_delay.get()}ms')
