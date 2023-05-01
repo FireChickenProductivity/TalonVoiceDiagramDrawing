@@ -166,6 +166,15 @@ class Actions:
         ''''''
         actions.user.diagram_drawing_draw_diamond_around_cursor(horizontal_amount, vertical_amount)
         actions.user.diagram_drawing_draw_diamond_around_cursor(horizontal_amount + 0.5, vertical_amount + 0.5*vertical_amount/horizontal_amount)
+    
+    def diagram_drawing_draw_square_between_specifiers(origin: PositionSpecifier, target: PositionSpecifier):
+        ''''''
+        origin_position: MousePosition = actions.user.diagram_drawing_get_position_from_specifier(origin)
+        target_position: MousePosition = actions.user.diagram_drawing_get_position_from_specifier(target)
+        second_position: MousePosition = MousePosition(target_position.get_horizontal(), origin_position.get_vertical())
+        fourth_position: MousePosition = MousePosition(origin_position.get_horizontal(), target_position.get_vertical())
+        draw_rectangle(origin_position, second_position, fourth_position, target_position)
+
 
 def compute_double_rectangle_thickness_scaled_to_line_unit():
     return double_rectangle_thickness.get()/line_drawing_unit.get()
