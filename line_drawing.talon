@@ -41,5 +41,8 @@ diamond <number_small> by <number_small>: user.diagram_drawing_draw_diamond_arou
 (dub|double) diamond <number_small> by <number_small>:
     user.diagram_drawing_draw_double_diamond_around_cursor(number_small_1, number_small_2)
 
+<user.diagram_drawing_position_specifier> lines <user.diagram_drawing_position_specifier>:
+    user.diagram_drawing_draw_square_between_specifiers(diagram_drawing_position_specifier_1, diagram_drawing_position_specifier_2)
+
 <user.diagram_drawing_position_specifier> (pair|parallel) [lines] <user.diagram_drawing_position_specifier> gap <number_small>:
     user.draw_parallel_lines_around_named_positions_with_gap(diagram_drawing_position_specifier_1, diagram_drawing_position_specifier_2, number_small)
