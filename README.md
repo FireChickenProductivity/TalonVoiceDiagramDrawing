@@ -44,6 +44,8 @@ The numbering is stored in a file and should be preserved across sessions.
 # Line Drawing
 Saying "line (up, down, left, right, peft (up and left), pight (up and right), neft (down and left), or night (down and right)) (an integer between 1 and 99)" will draw a line from the cursor's current position to a position in the direction specified by the specified integer amount. Saying "line up five" draws a line up from the cursor by five units.
 
+Saying "dash line (one of the direction specifiers from the line command) (an integer between 1 and 99)" will draw a dashed line from the cursor's current position to a position in the direction specified by the specified integer amount. The word line is optional.
+
 Saying "(position specifier) stripe (position specifier)" will draw a line between the position specifiers.
 
 Saying "(position specifier) stripe (position specifier) with (number)" will draw a line between the specified positions labeled in the middle with the number.
