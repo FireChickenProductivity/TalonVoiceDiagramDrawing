@@ -136,7 +136,7 @@ class Actions:
         current_position: MousePosition = MousePosition.current()
         upper_left, upper_right, bottom_left, bottom_right = compute_rectangle_positions_around_position(horizontal_amount, upper_vertical_amount + bottom_vertical_amount, current_position)
         draw_rectangle(upper_left, upper_right, bottom_left, bottom_right)
-        scaled_upper_vertical_amount = upper_vertical_amount*line_drawing_unit.get()
+        scaled_upper_vertical_amount = upper_vertical_amount*line_drawing_unit.get()*2
         upper_bottom_left = upper_left + MousePosition(0, scaled_upper_vertical_amount)
         upper_bottom_right = upper_right + MousePosition(0, scaled_upper_vertical_amount)
         draw_and_store_line_between_points(upper_bottom_left, upper_bottom_right)
