@@ -67,6 +67,10 @@ Saying "cross out (position specifier)" draws an x at the specified position. Th
 
 Saying "arrowhead new (an integer number specifying the angle in which the arrowhead should point in degrees)" will draw an arrowhead pointing in the specified direction. The word new is optional.
 
+Saying "lines (an integer between 1 and 99) by (an integer between 1 and 99)" will draw a rectangle around the cursor with the width specified by the first integer and the height specified by the second integer.
+
+Saying "(dub or double) lines (an integer between 1 and 99) by (an integer between 1 and 99)" will draw a double line rectangle around the cursor with width specified by the first integer and height specified by the second integer.
+
 # Text
 Saying "text" creates a text field at the cursor's location.
 
