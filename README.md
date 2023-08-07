@@ -71,6 +71,14 @@ Saying "lines (an integer between 1 and 99) by (an integer between 1 and 99)" wi
 
 Saying "(dub or double) lines (an integer between 1 and 99) by (an integer between 1 and 99)" will draw a double line rectangle around the cursor with width specified by the first integer and height specified by the second integer.
 
+Saying "lines (an integer between 1 and 99) by (an integer between 1 and 99) by (an integer between 1 and 99)" will draw 2 vertically stacked rectangles with the width determined by the first integer, the height of the top rectangle determined by the second integer, and the height of the bottom rectangle determined by the third integer.
+
+Saying "lines (an integer between 1 and 99) by (an integer between 1 and 99) by (an integer between 1 and 99)" does the same thing as the previous command but with the the outer rectangle drawn with double lines.
+
+Saying "diamond (an integer between 1 and 99) by (an integer between 1 and 99)" draws a diamond with the width determined by the first integer and the height determined by the second integer.
+
+Saying "(dub or double) diamond (an integer between 1 and 99) by (an integer between 1 and 99)" draws a double line diamond with the width determined by the first integer and the height determined by the second integer.
+
 # Text
 Saying "text" creates a text field at the cursor's location.
 
