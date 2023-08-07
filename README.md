@@ -75,6 +75,10 @@ Saying "lines (an integer between 1 and 99) by (an integer between 1 and 99) by 
 
 Saying "lines (an integer between 1 and 99) by (an integer between 1 and 99) by (an integer between 1 and 99)" does the same thing as the previous command but with the the outer rectangle drawn with double lines.
 
+Saying "(position specifier) lines (position specifier)" draws a rectangle between the specified positions.
+
+Saying "(position specifier) (par or parallel) lines (position specifier) gap (an integer between 1 and 99)" draws parallel lines centered at the imaginary line between the position specifiers with the amount of gap between the lines determined by the integer. The word lines is optional.
+
 Saying "diamond (an integer between 1 and 99) by (an integer between 1 and 99)" draws a diamond with the width determined by the first integer and the height determined by the second integer.
 
 Saying "(dub or double) diamond (an integer between 1 and 99) by (an integer between 1 and 99)" draws a double line diamond with the width determined by the first integer and the height determined by the second integer.
