@@ -65,6 +65,8 @@ Saying "(position specifier) dash stripe (position specifier)" will draw a dashe
 
 Saying "cross out (position specifier)" draws an x at the specified position. The word out is optional.
 
+Saying "arrowhead new (an integer number specifying the angle in which the arrowhead should point in degrees)" will draw an arrowhead pointing in the specified direction. The word new is optional.
+
 # Text
 Saying "text" creates a text field at the cursor's location.
 
