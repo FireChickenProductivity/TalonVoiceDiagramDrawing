@@ -15,8 +15,11 @@ The canvas specifying commands can be found in canvas.talon.
 # Position Specifiers
 Position specifiers are ways to specify positions to commands. Some commands will number positions. Those positions can be specified by number. Locations on the alpha grid (see below) are specified with the phonetic alphabet words corresponding to the letters in vertical, horizontal order. Positions on the current graph are specified by how many tick marks to move along each axis each separated by the word by (for example: minus five by ten means five tick marks to the left and ten tick marks up on a standard two dimensional graph). The number of tick marks can be specified with a decimal number that can be positive or negative, but the numbers on both sides of the decimal point can only be between 0 and 99 in magnitude.
 
- Saying "move" followed by a position specifier moves the cursor to the specified position.
- 
+Saying "move" followed by a position specifier moves the cursor to the specified position.
+
+# Direction Specifiers
+Direction specifiers are used by some commands to specify directions: up, down, left, right, peft (up and left), pight (up and right), neft (down and left), or night (down and right).
+
  # Alpha Grid
  The alpha grid denotes positions on the canvas by dividing it into a 26 by 26 grid.
  
@@ -42,9 +45,13 @@ Saying "number this", "number here", or "number that" manually numbers the curre
 The numbering is stored in a file and should be preserved across sessions.
 
 # Line Drawing
-Saying "line (up, down, left, right, peft (up and left), pight (up and right), neft (down and left), or night (down and right)) (an integer between 1 and 99)" will draw a line from the cursor's current position to a position in the direction specified by the specified integer amount. Saying "line up five" draws a line up from the cursor by five units.
+Saying "line (direction specifier) (an integer between 1 and 99)" will draw a line from the cursor's current position to a position in the direction specified by the specified integer amount. Saying "line up five" draws a line up from the cursor by five units.
 
-Saying "dash line (one of the direction specifiers from the line command) (an integer between 1 and 99)" will draw a dashed line from the cursor's current position to a position in the direction specified by the specified integer amount. The word line is optional.
+Saying "line (an integer between 1 and 99) (one of the direction specifiers that denotes 2 directions) (an integer between 1 and 99)" will draw a line from the cursor's current position to a position in the direction specified. The first integer determines how much the cursor is moved in the first direction, and the second integer determines how much the cursor is moved in the second direction. 
+
+Saying "dash line (direction specifier) (an integer between 1 and 99)" will draw a dashed line from the cursor's current position to a position in the direction specified by the specified integer amount. The word line is optional.
+
+Saying "dash line (an integer between 1 and 99) (one of the direction specifiers that denotes 2 directions) (an integer between 1 and 99)" will draw a dashed line from the cursor's current position to a position in the direction specified. The first integer determines how much the cursor is moved in the first direction, and the second integer determines how much the cursor is moved in the second direction. The word line is optional.
 
 Saying "(position specifier) stripe (position specifier)" will draw a line between the position specifiers.
 
