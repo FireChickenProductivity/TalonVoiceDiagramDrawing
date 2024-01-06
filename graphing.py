@@ -30,14 +30,14 @@ tick_half_size = module.setting(
 default_tick_spacing = module.setting(
     'diagram_drawing_default_tick_spacing',
     type = int,
-    default = 20,
+    default = 30,
     desc = 'The default amount of space between ticks in pixels'
 )
 
 axis_length_unit = module.setting(
     'diagram_drawing_axis_length_unit',
     type = int,
-    default = 20,
+    default = 30,
     desc = 'The unit for determining axis length in pixels'
 )
 
@@ -157,7 +157,7 @@ class Axis:
         tick_start: MousePosition = axis_position + tick_direction_vector
         tick_ending: MousePosition = axis_position - tick_direction_vector
         actions.user.diagram_drawing_draw_line(tick_start, tick_ending)
-        tick_label_position: MousePosition = tick_ending + tick_direction_vector
+        tick_label_position: MousePosition = tick_ending + 2*tick_direction_vector
         tick_label_position.go()
         actions.user.diagram_drawing_create_text_field()
         give_active_text_field_text(label)
