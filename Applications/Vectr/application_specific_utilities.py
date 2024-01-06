@@ -6,7 +6,7 @@ module = Module()
 vectr_color_interface_click_delay = module.setting(
     'diagram_drawing_vectr_color_interface_click_delay',
     type = int,
-    default = 500,
+    default = 100,
     desc = 'How long to pause between clicking on aspects of the vectr color interface'
 )
 
