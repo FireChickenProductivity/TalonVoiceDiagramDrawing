@@ -98,3 +98,8 @@ Saying "(position specifier) (value or val) (number)" creates a text field with 
 
 # Selection
 Saying "done" or "finish" unselects.
+
+# Inkscape
+You have to change the default configuration for these commands to work with Inkscape. Set the fill to black (you should see the fill color options on the bottom of the screen). Set the stroke to black by shift clicking the color black from the fill color options. 
+
+You open the preferences page by going to edit and then preferences. If you want to do that by keyboard, you can press alt e to open the edit options, press end to get to preferences, and press enter to select preferences. 
