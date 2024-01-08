@@ -1,5 +1,5 @@
 import math
-from talon import actions, Module
+from talon import actions, Module, settings
 from .fire_chicken.mouse_position import MousePosition
 from .directions import Direction
 from .position_storage import store_line_in_main_storage
@@ -9,20 +9,26 @@ from math import atan2, pi, cos, sin
 from typing import Union
 
 module = Module()
-line_drawing_unit = module.setting(
-    'diagram_drawing_line_drawing_unit',
+line_drawing_unit_setting_name = 'diagram_drawing_line_drawing_unit'
+line_drawing_unit = 'user.' + line_drawing_unit_setting_name
+module.setting(
+    line_drawing_unit_setting_name,
     type = int,
     default = 20,
     desc = 'The unit length for line drawing'
 )
-cross_out_size = module.setting(
-    'diagram_drawing_cross_out_size',
+cross_out_size_setting_name = 'diagram_drawing_cross_out_size'
+cross_out_size = 'user.' + cross_out_size_setting_name
+module.setting(
+    cross_out_size_setting_name,
     type = int,
     default = 80,
     desc = 'The size of the cross out lines'
 )
-double_rectangle_thickness = module.setting(
-    'diagram_drawing_double_rectangle_thickness',
+double_rectangle_thickness_setting_name = 'diagram_drawing_double_rectangle_thickness'
+double_rectangle_thickness = 'user.' + double_rectangle_thickness_setting_name
+module.setting(
+    double_rectangle_thickness_setting_name,
     type = int,
     default = 6,
     desc = 'The distance between double rectangles'
@@ -136,7 +142,7 @@ class Actions:
         current_position: MousePosition = MousePosition.current()
         upper_left, upper_right, bottom_left, bottom_right = compute_rectangle_positions_around_position(horizontal_amount, upper_vertical_amount + bottom_vertical_amount, current_position)
         draw_rectangle(upper_left, upper_right, bottom_left, bottom_right)
-        scaled_upper_vertical_amount = upper_vertical_amount*line_drawing_unit.get()*2
+        scaled_upper_vertical_amount = upper_vertical_amount*settings.get(line_drawing_unit)*2
         upper_bottom_left = upper_left + MousePosition(0, scaled_upper_vertical_amount)
         upper_bottom_right = upper_right + MousePosition(0, scaled_upper_vertical_amount)
         draw_and_store_line_between_points(upper_bottom_left, upper_bottom_right)
@@ -149,8 +155,8 @@ class Actions:
 
     def diagram_drawing_draw_diamond_around_cursor(horizontal_amount: float, vertical_amount: float):
         ''''''
-        scaled_horizontal = horizontal_amount*line_drawing_unit.get()
-        scaled_vertical = vertical_amount*line_drawing_unit.get()
+        scaled_horizontal = horizontal_amount*settings.get(line_drawing_unit)
+        scaled_vertical = vertical_amount*settings.get(line_drawing_unit)
         current_position: MousePosition = MousePosition.current()
         left = current_position + MousePosition(-scaled_horizontal, 0)
         right = current_position + MousePosition(scaled_horizontal, 0)
@@ -177,10 +183,10 @@ class Actions:
 
 
 def compute_double_rectangle_thickness_scaled_to_line_unit():
-    return double_rectangle_thickness.get()/line_drawing_unit.get()
+    return settings.get(double_rectangle_thickness)/settings.get(line_drawing_unit)
 
 def compute_scaled_position_difference(horizontal: int, vertical: int):
-    return MousePosition(horizontal, vertical)*line_drawing_unit.get()
+    return MousePosition(horizontal, vertical)*settings.get(line_drawing_unit)
 
 def draw_line_with_direction_and_amount(direction: Direction, amount: int, line_drawing_from_cursor_function):
     horizontal: int = direction.horizontal*amount
@@ -194,8 +200,8 @@ def draw_line_from_cursor_using_complex_direction_and_amounts(direction: Directi
         line_drawing_from_cursor_function(direction_adjusted_horizontal, direction_adjusted_vertical)
 
 def compute_rectangle_positions_around_position(horizontal_amount: int, vertical_amount: int, position: MousePosition):
-    scaled_horizontal = horizontal_amount*line_drawing_unit.get()
-    scaled_vertical = vertical_amount*line_drawing_unit.get()
+    scaled_horizontal = horizontal_amount*settings.get(line_drawing_unit)
+    scaled_vertical = vertical_amount*settings.get(line_drawing_unit)
     upper_left: MousePosition = MousePosition(-scaled_horizontal, -scaled_vertical) + position
     upper_right: MousePosition = MousePosition(scaled_horizontal, -scaled_vertical) + position
     bottom_left: MousePosition = MousePosition(-scaled_horizontal, scaled_vertical) + position
@@ -281,7 +287,7 @@ def compute_difference_position_with_angle_and_length(angle: float, length: int)
     return position
 
 def cross_out_at_position(position: MousePosition):
-    half_cross_out_size = cross_out_size.get()/2
+    half_cross_out_size = settings.get(cross_out_size)/2
     first_line_start = MousePosition(-half_cross_out_size, -half_cross_out_size) + position
     first_line_ending = MousePosition(half_cross_out_size, half_cross_out_size) + position
     second_line_start = MousePosition(half_cross_out_size, -half_cross_out_size) + position
