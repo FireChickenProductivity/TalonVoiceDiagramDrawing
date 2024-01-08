@@ -1,4 +1,4 @@
-from talon import Context, actions, Module, ctrl
+from talon import Context, actions, Module, ctrl, settings
 from ...fire_chicken.mouse_position import MousePosition
 from typing import List
 from ...graphing import dot_radius
@@ -6,15 +6,19 @@ from ...graphing import dot_radius
 module = Module()
 module.tag('inkscape', desc = 'Activates drawing commands for inkscape')
 
-inkscape_filled_in_shape_drawing_delay = module.setting(
-    'diagram_drawing_inkscape_filled_in_shape_drawing_delay',
+inkscape_filled_in_shape_drawing_delay_setting_name = 'diagram_drawing_inkscape_filled_in_shape_drawing_delay'
+inkscape_filled_in_shape_drawing_delay = 'user.' + inkscape_filled_in_shape_drawing_delay_setting_name
+module.setting(
+    inkscape_filled_in_shape_drawing_delay_setting_name,
     type = int,
     default = 100,
     desc = 'How long to pause in milliseconds at various points of drawing a filled in shape in inkscape. Consider making this longer if drawing filled in shapes in inkscape is not working.'
 )
 
-inkscape_dot_drawing_delay = module.setting(
-    'diagram_drawing_inkscape_dot_drawing_delay',
+inkscape_dot_drawing_delay_setting_name = 'diagram_drawing_inkscape_dot_drawing_delay'
+inkscape_dot_drawing_delay = 'user.' + inkscape_dot_drawing_delay_setting_name
+module.setting(
+    inkscape_dot_drawing_delay_setting_name,
     type = int,
     default = 500,
     desc = 'How long to pause in milliseconds when drawing a dot in inkscape. '
@@ -129,4 +133,4 @@ def wait_filled_in_shape_drawing_delay():
     wait_setting_delay(inkscape_filled_in_shape_drawing_delay)
 
 def wait_setting_delay(setting):
-    actions.sleep(f'{setting.get()}ms')
+    actions.sleep(f'{settings.get(setting)}ms')
