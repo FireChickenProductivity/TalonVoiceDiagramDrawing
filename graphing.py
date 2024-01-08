@@ -1,4 +1,4 @@
-from talon import Module, actions, Context, app
+from talon import Module, actions, Context, app, settings
 from .fire_chicken.mouse_position import MousePosition
 from .fire_chicken.data_storage import JSONFile, Storage
 import math
@@ -7,35 +7,45 @@ from .text_fields import give_active_text_field_text
 module = Module()
 module.tag('diagram_drawing_graphing', desc = 'Activate diagram drawing graphing commands')
 graphing_context = Context()
-circle_drawing_delay = module.setting(
-    'diagram_drawing_circle_drawing_delay',
+circle_drawing_delay_setting_name = 'diagram_drawing_circle_drawing_delay'
+circle_drawing_delay = 'user.' + circle_drawing_delay_setting_name
+module.setting(
+    circle_drawing_delay_setting_name,
     type = float,
     default = 0.02,
     desc = 'How much to pause between points when drawing circles through freestyle drawing'
 )
-dot_radius = module.setting(
-    'diagram_drawing_dot_radius',
+dot_radius_setting_name = 'diagram_drawing_dot_radius'
+dot_radius = 'user.' + dot_radius_setting_name
+module.setting(
+    dot_radius_setting_name,
     type = int,
     default = 7,
     desc = 'The radius of dots'
 )
 
-tick_half_size = module.setting(
-    'diagram_drawing_tick_half_size',
+tick_half_size_setting_name = 'diagram_drawing_tick_half_size'
+tick_half_size = 'user.' + tick_half_size_setting_name
+module.setting(
+    tick_half_size_setting_name,
     type = int,
     default = 15,
     desc = 'Half the size of tick marks on graphs'
 )
 
-default_tick_spacing = module.setting(
-    'diagram_drawing_default_tick_spacing',
+default_tick_spacing_setting_name = 'diagram_drawing_default_tick_spacing'
+default_tick_spacing = 'user.' + default_tick_spacing_setting_name
+module.setting(
+    default_tick_spacing_setting_name,
     type = int,
     default = 30,
     desc = 'The default amount of space between ticks in pixels'
 )
 
-axis_length_unit = module.setting(
-    'diagram_drawing_axis_length_unit',
+axis_length_unit_setting_name = 'diagram_drawing_axis_length_unit'
+axis_length_unit = 'user.' + axis_length_unit_setting_name
+module.setting(
+    axis_length_unit_setting_name,
     type = int,
     default = 30,
     desc = 'The unit for determining axis length in pixels'
@@ -153,7 +163,7 @@ class Axis:
         axis_position: MousePosition = self.get_position_along_axis_by_amount_from(axis_position_signed_distance, self.origin)
         direction_unit_vector: MousePosition = self.compute_direction_unit_vector()
         tick_direction_unit_vector: MousePosition = MousePosition(direction_unit_vector.get_vertical(), -direction_unit_vector.get_horizontal())
-        tick_direction_vector: MousePosition = MousePosition(tick_direction_unit_vector.get_horizontal()*tick_half_size.get(), tick_direction_unit_vector.get_vertical()*tick_half_size.get())
+        tick_direction_vector: MousePosition = MousePosition(tick_direction_unit_vector.get_horizontal()*settings.get(tick_half_size), tick_direction_unit_vector.get_vertical()*settings.get(tick_half_size))
         tick_start: MousePosition = axis_position + tick_direction_vector
         tick_ending: MousePosition = axis_position - tick_direction_vector
         actions.user.diagram_drawing_draw_line(tick_start, tick_ending)
@@ -250,7 +260,7 @@ class Graph:
         unit_vector: MousePosition = compute_unit_vector(MousePosition(direction_horizontal, direction_vertical))
         start: MousePosition = self.origin + position_multiplied_by(unit_vector, starting_distance)
         ending: MousePosition = self.origin - position_multiplied_by(unit_vector, ending_distance)
-        axis: Axis = Axis(self.origin, start, ending, default_tick_spacing.get())
+        axis: Axis = Axis(self.origin, start, ending, settings.get(default_tick_spacing))
         axis.draw()
         self.axes.append(axis)
         
@@ -276,15 +286,15 @@ class Actions:
         actions.user.diagram_drawing_start_freestyle_drawing()
         current_position = MousePosition.current()
         actions.user.diagram_drawing_store_position(current_position)
-        for i in range(dot_radius.get()):
-            draw_dot_circle(current_position, i, circle_drawing_delay.get())
+        for i in range(settings.get(dot_radius)):
+            draw_dot_circle(current_position, i, settings.get(circle_drawing_delay))
         actions.user.diagram_drawing_stop_freestyle_drawing()
     
     def diagram_drawing_draw_open_dot():
         ''''''
         current_position = MousePosition.current()
         actions.user.diagram_drawing_store_position(current_position)
-        draw_open_dot_circle(current_position, dot_radius.get(), circle_drawing_delay.get())
+        draw_open_dot_circle(current_position, settings.get(dot_radius), settings.get(circle_drawing_delay))
 
     def diagram_drawing_new_graph():
         ''''''
@@ -305,7 +315,7 @@ class Actions:
     def diagram_drawing_add_next_axis(starting_distance: int, ending_distance: int):
         ''''''
         global current_graph
-        unit = axis_length_unit.get()
+        unit = settings.get(axis_length_unit)
         current_graph.add_next_axis(starting_distance*unit, ending_distance*unit)
         update_graph_file()
     

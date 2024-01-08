@@ -1,10 +1,12 @@
 from ...fire_chicken import path_utilities, data_storage
 import os
-from talon import actions, Module
+from talon import actions, Module, settings
 
 module = Module()
-vectr_color_interface_click_delay = module.setting(
-    'diagram_drawing_vectr_color_interface_click_delay',
+vectr_color_interface_click_delay_setting_name = 'diagram_drawing_vectr_color_interface_click_delay'
+vectr_color_interface_click_delay = 'user.' + vectr_color_interface_click_delay_setting_name
+module.setting(
+    vectr_color_interface_click_delay_setting_name,
     type = int,
     default = 100,
     desc = 'How long to pause between clicking on aspects of the vectr color interface'
@@ -27,7 +29,7 @@ def fill_in_current_continuous_line_shape():
     wait_for_color_interface_to_process_clicking()
     
 def wait_for_color_interface_to_process_clicking():
-    actions.sleep(f'{vectr_color_interface_click_delay.get()}ms')
+    actions.sleep(f'{settings.get(vectr_color_interface_click_delay)}ms')
 
 def click_storage_position(name: str):
     file = get_storage_position(name)

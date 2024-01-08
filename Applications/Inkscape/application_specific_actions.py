@@ -97,7 +97,7 @@ class Actions:
         actions.key('shift:down')
         hold_left_mouse_button_down()
         original_mouse_position = MousePosition.current()
-        target_mouse_position = original_mouse_position + MousePosition(dot_radius.get(), dot_radius.get())
+        target_mouse_position = original_mouse_position + MousePosition(settings.get(dot_radius), settings.get(dot_radius))
         target_mouse_position.go()
         wait_setting_delay(inkscape_dot_drawing_delay)
         actions.key('shift:up')

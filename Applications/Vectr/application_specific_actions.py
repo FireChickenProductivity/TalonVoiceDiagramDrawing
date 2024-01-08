@@ -1,4 +1,4 @@
-from talon import Context, actions, Module, ctrl
+from talon import Context, actions, Module, ctrl, settings
 from ...fire_chicken.mouse_position import MousePosition
 from typing import List
 from .application_specific_utilities import fill_in_current_continuous_line_shape
@@ -74,7 +74,7 @@ class Actions:
         actions.key('shift:down')
         hold_left_mouse_button_down()
         original_mouse_position = MousePosition.current()
-        target_mouse_position = original_mouse_position + MousePosition(dot_radius, dot_radius)
+        target_mouse_position = original_mouse_position + MousePosition(settings.get(dot_radius), settings.get(dot_radius))
         target_mouse_position.go()
         actions.key('shift:up')
         release_left_mouse_button()
