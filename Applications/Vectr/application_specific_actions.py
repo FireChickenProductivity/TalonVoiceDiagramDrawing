@@ -1,5 +1,8 @@
-from talon import Context, actions, Module, ctrl
+from talon import Context, actions, Module, ctrl, settings
 from ...fire_chicken.mouse_position import MousePosition
+from typing import List
+from .application_specific_utilities import fill_in_current_continuous_line_shape
+from ...graphing import dot_radius
 
 module = Module()
 module.tag('vectr', desc = 'Activates drawing commands for vectr')
@@ -20,6 +23,18 @@ class Actions:
         left_click()
         actions.user.diagram_drawing_unselect()
     
+    def diagram_drawing_draw_filled_in_line_shape(positions: List):
+        ''''''
+        actions.user.diagram_drawing_unselect()
+        activate_line_drawing_tool()
+        for position in positions:
+            position.go()
+            left_click()
+        positions[0].go()
+        left_click()
+        fill_in_current_continuous_line_shape()
+        actions.user.diagram_drawing_unselect()
+
     def diagram_drawing_create_text_field():
         ''''''
         actions.user.diagram_drawing_unselect()
@@ -50,6 +65,20 @@ class Actions:
     def diagram_drawing_get_drawing_application_name() -> str:
         ''''''
         return 'Vectr'
+    
+    #overrides
+    def diagram_drawing_draw_dot():
+        ''''''
+        actions.user.diagram_drawing_unselect()
+        activate_ellipse_tool()
+        actions.key('shift:down')
+        hold_left_mouse_button_down()
+        original_mouse_position = MousePosition.current()
+        target_mouse_position = original_mouse_position + MousePosition(settings.get(dot_radius), settings.get(dot_radius))
+        target_mouse_position.go()
+        actions.key('shift:up')
+        release_left_mouse_button()
+        actions.user.diagram_drawing_unselect()
 
 def activate_line_drawing_tool():
     actions.key('v')
@@ -59,6 +88,9 @@ def left_click():
 
 def toggle_pencil_tool():
     actions.key('p')
+
+def activate_ellipse_tool():
+    actions.key('e')
 
 def hold_left_mouse_button_down():
     ctrl.mouse_click(button=0, down=True)

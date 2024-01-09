@@ -49,12 +49,37 @@ def draw_points(points, between_point_delay: float = 0.02):
         point.go()
         actions.sleep(between_point_delay)
     actions.user.diagram_drawing_stop_freestyle_drawing()
-    
+
+#whatIV coded this
 def draw_curve_dashed(points):
-    dash_size = math.floor(len(points)/9)
-    for dash_ending in range(dash_size, len(points), dash_size*2):
+    gap_size = 10
+    dash_multiple_of_gap = 2
+    # dash size an integer multiple of gap size
+   
+    num_dashes = math.floor((len(points)/gap_size + 1)/(dash_multiple_of_gap + 1))
+
+    minimum_number_dashes = 2
+    if num_dashes < minimum_number_dashes:
+        num_dashes = minimum_number_dashes
+        gap_size = math.floor(len(points)/(minimum_number_dashes*dash_multiple_of_gap + 1))
+    dash_size = dash_multiple_of_gap*gap_size
+
+    left_over = len(points) - (num_dashes*(dash_multiple_of_gap + 1) -1)*gap_size
+    add_to_first_dash = math.floor(left_over/2)
+   
+    # draw first dash
+    dash_ending = dash_size + add_to_first_dash
+    draw_points(points[0:dash_ending])
+
+    # draw middle dashes - all but first and last
+    for i in range(num_dashes - 2):
+        dash_ending += dash_size + gap_size
         dash_start = dash_ending - dash_size
         draw_points(points[dash_start:dash_ending])
+
+    # draw last dash
+   
+    draw_points(points[dash_ending + gap_size:])
 
 def compute_shifted_curve_points(points, shift_function):
     if len(points) <= 2:
@@ -190,8 +215,29 @@ class BezierQuadratic:
         vertical = -initial_slope*(horizontal - start.get_horizontal()) + start.get_vertical()
         control_point = MousePosition(horizontal, vertical)
         return BezierQuadratic(start, ending, control_point)
-        
 
+class Line:
+    def __init__(self, start: MousePosition, ending: MousePosition):
+        self.start = start
+        self.ending = ending
+    
+    def compute_position_at_distance_from_start(self, distance: float) -> MousePosition:
+        if 0 > distance > self.start.distance_from(self.ending):
+            raise ValueError(f'The specified position with distance {distance} from the starting position of the line is not on the line!')
+        change: MousePosition = self.ending - self.start
+        direction_change: MousePosition = change*1/(change.compute_magnitude())
+        result: MousePosition = self.start + distance*direction_change
+        return result
+    
+    def compute_position_at_fraction_of_distance_between_points(self, fraction: float) -> MousePosition:
+        distance: float = self.compute_fraction_of_distance_between_points(fraction)
+        position: MousePosition = self.compute_position_at_distance_from_start(distance)
+        return position
+
+    def compute_fraction_of_distance_between_points(self, fraction: float) -> float:
+        distance: float = fraction*self.start.distance_from(self.ending)
+        return distance
+    
 module = Module()
 @module.action_class
 class Actions:
