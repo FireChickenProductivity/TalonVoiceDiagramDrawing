@@ -100,6 +100,5 @@ Saying "(position specifier) (value or val) (number)" creates a text field with 
 Saying "done" or "finish" unselects.
 
 # Inkscape
-You have to change the default configuration for these commands to work with Inkscape. Set the fill to black (you should see the fill color options on the bottom of the screen). Set the stroke to black by shift clicking the color black from the fill color options. 
+You have to change the default configuration for these commands to work with Inkscape. Set the stroke to black by shift clicking the color black from the fill color options (you should see the fill color options on the bottom of the screen). Draw a circle using the command "draw point". Click the circle so that it is selected. Now open the preferences page. You open the preferences page by going to edit and then preferences. If you want to do that by keyboard, you can press alt e to open the edit options, press end to get to preferences, and press enter to select preferences. Go to tools and then pencil. Choose "this tool's own style" and then "Take from selection". Now close preferences and set the fill to black (you should see the fill color options on the bottom of the screen). You should now be finished updating the Inkscape settings.
 
-You open the preferences page by going to edit and then preferences. If you want to do that by keyboard, you can press alt e to open the edit options, press end to get to preferences, and press enter to select preferences. 
