@@ -50,9 +50,9 @@ class MousePosition:
     @staticmethod
     def from_text(text: str):
         horizontal_ending = text.index(MousePosition.COORDINATE_SEPARATOR)
-        horizontal = int(text[0 : horizontal_ending])
+        horizontal = int(float(text[0 : horizontal_ending]))
         vertical_start = horizontal_ending + 1
-        vertical = int(text[vertical_start:])
+        vertical = int(float(text[vertical_start:]))
         return MousePosition(horizontal, vertical)
 
     @staticmethod
