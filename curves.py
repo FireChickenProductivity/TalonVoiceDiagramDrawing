@@ -147,6 +147,8 @@ def compute_two_slope_curve_points(start: MousePosition, ending: MousePosition, 
     return points
 
 def compute_range(start: int, inclusive_ending: int):
+    start = int(start)
+    inclusive_ending = int(inclusive_ending)
     increment = 1
     if start > inclusive_ending:
         increment = -1
