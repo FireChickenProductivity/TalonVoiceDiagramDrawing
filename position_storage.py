@@ -14,12 +14,15 @@ class IndexedPositionStorage:
         self.show_display = False
     
     def fetch_positions_from_file(self):
-        with open(self.file_location, 'r') as file:
-            for line in file:
-                if line != '' and not line.isspace():
-                    line_without_new_line_character = line.rstrip()
-                    position = get_position_from_storage_representation(line_without_new_line_character)
-                    self.append_position_to_list(position)
+        try:
+            with open(self.file_location, 'r') as file:
+                for line in file:
+                    if line != '' and not line.isspace():
+                        line_without_new_line_character = line.rstrip()
+                        position = get_position_from_storage_representation(line_without_new_line_character)
+                        self.append_position_to_list(position)
+        except FileNotFoundError:
+            pass
 
     def get_position_indexed_from_one(self, index: int):
         position = self.positions[index - 1]
